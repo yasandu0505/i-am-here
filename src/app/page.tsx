@@ -46,10 +46,12 @@ export default function HomePage() {
 
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="outline" size="sm">
-              Log in
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/login">Log in</Link>
             </Button>
-            <Button size="sm">Sign up</Button>
+            <Button size="sm" asChild>
+              <Link href="/signup">Sign up</Link>
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -105,11 +107,11 @@ export default function HomePage() {
                   transition={{ duration: 0.3, delay: 0.2 }}
                   className="flex gap-4 mt-4"
                 >
-                  <Button variant="outline" size="sm" className="flex-1">
-                    Log in
+                  <Button variant="outline" size="sm" className="flex-1" asChild>
+                    <Link href="/login">Log in</Link>
                   </Button>
-                  <Button size="sm" className="flex-1">
-                    Sign up
+                  <Button size="sm" className="flex-1" asChild>
+                    <Link href="/signup">Sign up</Link>
                   </Button>
                 </motion.div>
               </motion.div>
