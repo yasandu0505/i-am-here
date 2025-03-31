@@ -71,6 +71,8 @@ export default function SignupPage() {
       router.push("/dashboard")
     } catch (_error) {
       // Error is handled in the auth context
+      console.log(error)
+
     } finally {
       setIsLoading(false)
     }
