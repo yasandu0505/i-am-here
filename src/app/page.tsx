@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { CheckCircle, Clock, BarChart3, QrCode, Shield, Users, Menu, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -59,43 +59,63 @@ export default function HomePage() {
         </div>
 
         {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-background border-b">
-            <div className="container mx-auto px-4 py-4">
-              <nav className="flex flex-col gap-4">
-                <Link
-                  href="#features"
-                  className="text-sm font-medium py-2 hover:text-primary transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="md:hidden bg-background border-b overflow-hidden"
+            >
+              <motion.div
+                initial={{ y: -20 }}
+                animate={{ y: 0 }}
+                exit={{ y: -20 }}
+                transition={{ duration: 0.3, ease: "easeOut", delay: 0.1 }}
+                className="container mx-auto px-4 py-4"
+              >
+                <nav className="flex flex-col gap-4">
+                  <Link
+                    href="#features"
+                    className="text-sm font-medium py-2 hover:text-primary transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Features
+                  </Link>
+                  <Link
+                    href="#how-it-works"
+                    className="text-sm font-medium py-2 hover:text-primary transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    How It Works
+                  </Link>
+                  <Link
+                    href="#testimonials"
+                    className="text-sm font-medium py-2 hover:text-primary transition-colors"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Testimonials
+                  </Link>
+                </nav>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3, delay: 0.2 }}
+                  className="flex gap-4 mt-4"
                 >
-                  Features
-                </Link>
-                <Link
-                  href="#how-it-works"
-                  className="text-sm font-medium py-2 hover:text-primary transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  How It Works
-                </Link>
-                <Link
-                  href="#testimonials"
-                  className="text-sm font-medium py-2 hover:text-primary transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Testimonials
-                </Link>
-              </nav>
-              <div className="flex gap-4 mt-4">
-                <Button variant="outline" size="sm" className="flex-1">
-                  Log in
-                </Button>
-                <Button size="sm" className="flex-1">
-                  Sign up
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
+                  <Button variant="outline" size="sm" className="flex-1">
+                    Log in
+                  </Button>
+                  <Button size="sm" className="flex-1">
+                    Sign up
+                  </Button>
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
       <main className="flex-1">
         <section className="relative overflow-hidden bg-gradient-to-b from-primary/10 to-background py-12 sm:py-16 md:py-20 lg:py-32">
