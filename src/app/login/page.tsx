@@ -4,7 +4,6 @@ import type React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
-import Image from "next/image"
 import { motion } from "framer-motion"
 import { QrCode, Eye, EyeOff, Clock, BarChart3 } from "lucide-react"
 
