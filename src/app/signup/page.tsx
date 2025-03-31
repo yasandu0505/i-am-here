@@ -4,8 +4,9 @@ import type React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { motion } from "framer-motion"
-import { QrCode, ArrowRight, Eye, EyeOff, CheckCircle } from "lucide-react"
+import { QrCode, ArrowRight, Eye, EyeOff, BarChart3, Shield, Users } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -71,6 +72,12 @@ export default function SignupPage() {
           <QrCode className="h-6 w-6 text-primary" />
           <span className="text-xl font-bold">I&apos;m Here</span>
         </Link>
+        <div className="ml-auto flex items-center gap-4">
+          <span className="text-sm text-muted-foreground">Already have an account?</span>
+          <Button variant="outline" size="sm" asChild>
+            <Link href="/login">Log in</Link>
+          </Button>
+        </div>
       </header>
       <main className="flex flex-1 items-center justify-center p-4 md:p-8">
         <div className="grid w-full gap-6 sm:grid-cols-1 md:grid-cols-2 lg:max-w-5xl">
@@ -101,8 +108,8 @@ export default function SignupPage() {
 
             <div className="relative mb-6">
               <div className="flex justify-between mb-2">
-                <div className="text-sm font-medium">Account Details</div>
-                <div className="text-sm font-medium">Role & Preferences</div>
+                <div className={`text-sm font-medium ${step === 1 ? "text-primary" : ""}`}>Account Details</div>
+                <div className={`text-sm font-medium ${step === 2 ? "text-primary" : ""}`}>Role & Preferences</div>
               </div>
               <div className="overflow-hidden rounded-full bg-muted h-2">
                 <div
@@ -288,40 +295,88 @@ export default function SignupPage() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
-            className="hidden md:block relative overflow-hidden rounded-lg bg-gradient-to-br from-primary/20 via-primary/10 to-background"
+            className="hidden md:block relative overflow-hidden rounded-lg"
           >
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-primary/20 to-background z-0" />
             <div className="absolute inset-0 bg-grid-white/10 bg-[size:20px_20px] opacity-10" />
-            <div className="relative flex h-full flex-col items-center justify-center p-6">
-              <div className="mb-6 flex flex-col items-center text-center">
+
+            <div className="relative z-10 h-full flex flex-col p-8">
+              <div className="flex-1 flex flex-col items-center justify-center text-center">
                 <motion.div
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: 0.3, duration: 0.5 }}
-                  className="mb-4 rounded-full bg-primary/10 p-3"
+                  className="mb-6"
                 >
-                  <CheckCircle className="h-8 w-8 text-primary" />
+                  <div className="inline-flex items-center justify-center h-20 w-20 rounded-full bg-primary/10 mb-4">
+                    <QrCode className="h-10 w-10 text-primary" />
+                  </div>
+                  <h2 className="text-3xl font-bold mb-2">Join I&apos;m Here</h2>
+                  <p className="text-muted-foreground max-w-sm mx-auto">
+                    The smart attendance tracking system trusted by thousands of educators worldwide
+                  </p>
                 </motion.div>
-                <h3 className="text-2xl font-bold">Join I&apos;m Here Today</h3>
-                <p className="mt-2 text-muted-foreground">Simplify attendance tracking and gain valuable insights</p>
+
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
+                  className="w-full max-w-md mb-8"
+                >
+                  <div className="relative aspect-video rounded-lg overflow-hidden shadow-xl">
+                    <Image
+                      src="/placeholder.svg?height=450&width=800"
+                      alt="I'm Here in action"
+                      width={800}
+                      height={450}
+                      className="object-cover"
+                      priority
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                    <div className="absolute bottom-0 left-0 p-6 text-white">
+                      <h3 className="text-xl font-bold mb-1">Streamlined Attendance</h3>
+                      <p className="text-sm text-white/80">
+                        QR code scanning makes taking attendance quick and accurate
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+
+                <div className="grid grid-cols-2 gap-4 w-full max-w-md">
+                  {features.map((feature, index) => (
+                    <motion.div
+                      key={feature.title}
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.6 + index * 0.1, duration: 0.5 }}
+                      className="bg-background/80 backdrop-blur-sm rounded-lg p-4 flex items-start gap-3 shadow-sm"
+                    >
+                      <div className="rounded-full bg-primary/10 p-2 shrink-0">{feature.icon}</div>
+                      <div>
+                        <h4 className="text-sm font-medium">{feature.title}</h4>
+                        <p className="text-xs text-muted-foreground mt-1">{feature.description}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
 
-              <div className="space-y-4 w-full max-w-md">
-                {features.map((feature, index) => (
-                  <motion.div
-                    key={feature.title}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.4 + index * 0.1, duration: 0.5 }}
-                    className="flex items-start space-x-3 rounded-lg border bg-background/60 backdrop-blur-sm p-3"
-                  >
-                    <div className="rounded-full bg-primary/10 p-1.5 text-primary">{feature.icon}</div>
-                    <div>
-                      <h4 className="text-sm font-medium">{feature.title}</h4>
-                      <p className="text-xs text-muted-foreground">{feature.description}</p>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1, duration: 0.5 }}
+                className="mt-auto pt-6 flex justify-between items-center text-sm text-muted-foreground"
+              >
+                <div>Trusted by 500+ schools worldwide</div>
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="text-primary">
+                      ★
                     </div>
-                  </motion.div>
-                ))}
-              </div>
+                  ))}
+                  <span className="ml-1">4.9/5</span>
+                </div>
+              </motion.div>
             </div>
 
             <motion.div
@@ -359,18 +414,23 @@ export default function SignupPage() {
 const features = [
   {
     title: "QR Code Check-ins",
-    description: "Streamline attendance with quick QR code scanning",
-    icon: <QrCode className="h-4 w-4" />,
+    description: "Fast and reliable attendance tracking",
+    icon: <QrCode className="h-4 w-4 text-primary" />,
   },
   {
     title: "Real-time Analytics",
-    description: "Get instant insights into attendance patterns",
-    icon: <CheckCircle className="h-4 w-4" />,
+    description: "Instant insights into attendance patterns",
+    icon: <BarChart3 className="h-4 w-4 text-primary" />,
   },
   {
-    title: "Secure & Reliable",
-    description: "Your data is protected with enterprise-grade security",
-    icon: <CheckCircle className="h-4 w-4" />,
+    title: "Secure Data",
+    description: "Enterprise-grade security for your data",
+    icon: <Shield className="h-4 w-4 text-primary" />,
+  },
+  {
+    title: "User Management",
+    description: "Easily manage students and classes",
+    icon: <Users className="h-4 w-4 text-primary" />,
   },
 ]
 

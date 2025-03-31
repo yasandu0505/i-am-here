@@ -6,7 +6,7 @@ import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { QrCode, Eye, EyeOff } from "lucide-react"
+import { QrCode, Eye, EyeOff, Clock, BarChart3 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -37,6 +37,12 @@ export default function LoginPage() {
           <QrCode className="h-6 w-6 text-primary" />
           <span className="text-xl font-bold">I&apos;m Here</span>
         </Link>
+        <div className="ml-auto flex items-center gap-4">
+          <span className="text-sm text-muted-foreground">New to I&apos;m Here?</span>
+          <Button variant="outline" size="sm" asChild>
+            <Link href="/signup">Sign up</Link>
+          </Button>
+        </div>
       </header>
       <main className="flex flex-1 items-center justify-center p-4 md:p-8">
         <div className="grid w-full gap-6 sm:grid-cols-1 md:grid-cols-2 lg:max-w-5xl">
@@ -140,28 +146,66 @@ export default function LoginPage() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
-            className="hidden md:block relative overflow-hidden rounded-lg bg-gradient-to-br from-primary/20 via-primary/10 to-background"
+            className="hidden md:flex relative overflow-hidden rounded-lg bg-gradient-to-br from-primary/20 via-primary/10 to-background"
           >
             <div className="absolute inset-0 bg-grid-white/10 bg-[size:20px_20px] opacity-10" />
-            <div className="relative flex h-full items-center justify-center p-6">
-              <div className="relative aspect-square w-full max-w-sm overflow-hidden rounded-lg shadow-xl">
+
+            <div className="relative flex h-full w-full flex-col items-center justify-center p-8">
+              <motion.div
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                className="absolute top-8 right-8 bg-primary/10 rounded-full p-3"
+              >
+                <QrCode className="h-6 w-6 text-primary" />
+              </motion.div>
+
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className="mb-8 text-center"
+              >
+                <h2 className="text-2xl font-bold mb-2">Attendance Made Simple</h2>
+                <p className="text-muted-foreground max-w-sm">
+                  Join thousands of educators who have simplified their attendance tracking process
+                </p>
+              </motion.div>
+
+              <div className="relative w-full max-w-md aspect-[16/9] rounded-lg overflow-hidden shadow-xl mb-8">
                 <Image
-                  src="/placeholder.svg?height=600&width=600"
-                  alt="Login illustration"
-                  width={600}
-                  height={600}
+                  src="/placeholder.svg?height=450&width=800"
+                  alt="Dashboard preview"
+                  width={800}
+                  height={450}
                   className="object-cover"
                   priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                  <h3 className="text-xl font-bold">Track attendance with ease</h3>
-                  <p className="mt-2 text-sm text-white/80">
-                    Streamline your attendance process with QR code check-ins
-                  </p>
+                <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                  <p className="text-sm font-medium">Powerful analytics dashboard</p>
                 </div>
               </div>
+
+              <div className="grid grid-cols-3 gap-4 w-full max-w-md">
+                {stats.map((stat, index) => (
+                  <motion.div
+                    key={stat.label}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.4 + index * 0.1, duration: 0.5 }}
+                    className="bg-background/80 backdrop-blur-sm rounded-lg p-4 text-center"
+                  >
+                    <div className="flex justify-center mb-2">
+                      <div className="rounded-full bg-primary/10 p-2">{stat.icon}</div>
+                    </div>
+                    <div className="text-2xl font-bold text-primary">{stat.value}</div>
+                    <div className="text-xs text-muted-foreground">{stat.label}</div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
+
             <motion.div
               animate={{
                 scale: [1, 1.2, 1],
@@ -193,4 +237,22 @@ export default function LoginPage() {
     </div>
   )
 }
+
+const stats = [
+  {
+    value: "500+",
+    label: "Schools",
+    icon: <QrCode className="h-4 w-4 text-primary" />,
+  },
+  {
+    value: "10k+",
+    label: "Teachers",
+    icon: <Clock className="h-4 w-4 text-primary" />,
+  },
+  {
+    value: "99%",
+    label: "Satisfaction",
+    icon: <BarChart3 className="h-4 w-4 text-primary" />,
+  },
+]
 
