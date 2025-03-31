@@ -22,6 +22,7 @@ type UserData = {
   role: string
   createdAt: any
   lastLogin: any
+  receiveUpdates?: boolean // Add this optional property
 }
 
 type AuthContextType = {
