@@ -4,12 +4,13 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { CheckCircle, Clock, BarChart3, QrCode, Shield, Users } from "lucide-react"
+import { CheckCircle, Clock, BarChart3, QrCode, Shield, Users, Menu, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 
 export default function HomePage() {
   const [scrolled, setScrolled] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,46 +30,94 @@ export default function HomePage() {
             <QrCode className="h-6 w-6 text-primary" />
             <span className="text-xl font-bold">I&apos;m Here</span>
           </div>
+
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="#features" className="text-sm font-medium hover:text-primary">
+            <Link href="#features" className="text-sm font-medium hover:text-primary transition-colors">
               Features
             </Link>
-            <Link href="#how-it-works" className="text-sm font-medium hover:text-primary">
+            <Link href="#how-it-works" className="text-sm font-medium hover:text-primary transition-colors">
               How It Works
             </Link>
-            <Link href="#testimonials" className="text-sm font-medium hover:text-primary">
+            <Link href="#testimonials" className="text-sm font-medium hover:text-primary transition-colors">
               Testimonials
             </Link>
           </nav>
-          <div className="flex items-center gap-4">
+
+          {/* Desktop Auth Buttons */}
+          <div className="hidden md:flex items-center gap-4">
             <Button variant="outline" size="sm">
               Log in
             </Button>
             <Button size="sm">Sign up</Button>
           </div>
+
+          {/* Mobile Menu Button */}
+          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 md:hidden" aria-label="Toggle menu">
+            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-background border-b">
+            <div className="container mx-auto px-4 py-4">
+              <nav className="flex flex-col gap-4">
+                <Link
+                  href="#features"
+                  className="text-sm font-medium py-2 hover:text-primary transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Features
+                </Link>
+                <Link
+                  href="#how-it-works"
+                  className="text-sm font-medium py-2 hover:text-primary transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  How It Works
+                </Link>
+                <Link
+                  href="#testimonials"
+                  className="text-sm font-medium py-2 hover:text-primary transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Testimonials
+                </Link>
+              </nav>
+              <div className="flex gap-4 mt-4">
+                <Button variant="outline" size="sm" className="flex-1">
+                  Log in
+                </Button>
+                <Button size="sm" className="flex-1">
+                  Sign up
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </header>
       <main className="flex-1">
-        <section className="relative overflow-hidden bg-gradient-to-b from-primary/10 to-background py-20 md:py-32">
+        <section className="relative overflow-hidden bg-gradient-to-b from-primary/10 to-background py-12 sm:py-16 md:py-20 lg:py-32">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid gap-8 md:grid-cols-2 md:gap-12 items-center">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="flex flex-col gap-6"
+                className="flex flex-col gap-6 text-center md:text-left"
               >
-                <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-                  Smart Attendance Tracking <span className="text-primary">Made Simple</span>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+                  Smart Attendance Tracking <span className="text-primary block md:inline">Made Simple</span>
                 </h1>
-                <p className="text-xl text-muted-foreground">
+                <p className="text-lg sm:text-xl text-muted-foreground">
                   Streamline your attendance process with QR code check-ins and real-time analytics.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button size="lg" className="font-medium">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                  <Button size="lg" className="font-medium w-full sm:w-auto">
                     Get Started
                   </Button>
-                  <Button size="lg" variant="outline" className="font-medium">
+                  <Button size="lg" variant="outline" className="font-medium w-full sm:w-auto">
                     See Demo
                   </Button>
                 </div>
@@ -77,7 +126,7 @@ export default function HomePage() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="relative mx-auto w-full max-w-md"
+                className="relative mx-auto w-full max-w-md mt-8 md:mt-0"
               >
                 <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl">
                   <Image
@@ -97,15 +146,15 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-grid-white/10 bg-[size:20px_20px] opacity-10" />
         </section>
 
-        <section id="features" className="py-20">
+        <section id="features" className="py-12 sm:py-16 md:py-20">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10 sm:mb-12 md:mb-16">
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
-                className="text-3xl font-bold tracking-tight sm:text-4xl mb-4"
+                className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-4"
               >
                 Powerful Features
               </motion.h2>
@@ -114,12 +163,12 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-xl text-muted-foreground max-w-2xl mx-auto"
+                className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto"
               >
                 Everything you need to manage attendance efficiently
               </motion.p>
             </div>
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 sm:gap-8">
               {features.map((feature, index) => (
                 <motion.div
                   key={feature.title}
@@ -127,28 +176,28 @@ export default function HomePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.1 * index }}
-                  className="flex flex-col gap-4 rounded-xl border p-6 bg-card text-card-foreground shadow-sm transition-all hover:shadow-md"
+                  className="flex flex-col gap-4 rounded-xl border p-4 sm:p-6 bg-card text-card-foreground shadow-sm transition-all hover:shadow-md"
                 >
                   <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
                     {feature.icon}
                   </div>
-                  <h3 className="text-xl font-bold">{feature.title}</h3>
-                  <p className="text-muted-foreground">{feature.description}</p>
+                  <h3 className="text-lg sm:text-xl font-bold">{feature.title}</h3>
+                  <p className="text-sm sm:text-base text-muted-foreground">{feature.description}</p>
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        <section id="how-it-works" className="py-20 bg-muted/50">
+        <section id="how-it-works" className="py-12 sm:py-16 md:py-20 bg-muted/50">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10 sm:mb-12 md:mb-16">
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
-                className="text-3xl font-bold tracking-tight sm:text-4xl mb-4"
+                className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-4"
               >
                 How It Works
               </motion.h2>
@@ -157,12 +206,12 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-xl text-muted-foreground max-w-2xl mx-auto"
+                className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto"
               >
                 Simple, fast, and reliable attendance tracking in three easy steps
               </motion.p>
             </div>
-            <div className="grid gap-8 md:grid-cols-3">
+            <div className="grid gap-8 sm:grid-cols-3">
               {steps.map((step, index) => (
                 <motion.div
                   key={step.title}
@@ -172,13 +221,13 @@ export default function HomePage() {
                   transition={{ duration: 0.5, delay: 0.1 * index }}
                   className="relative flex flex-col items-center text-center gap-4"
                 >
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground text-2xl font-bold">
+                  <div className="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-primary text-primary-foreground text-xl sm:text-2xl font-bold">
                     {index + 1}
                   </div>
-                  <h3 className="text-xl font-bold">{step.title}</h3>
-                  <p className="text-muted-foreground">{step.description}</p>
+                  <h3 className="text-lg sm:text-xl font-bold">{step.title}</h3>
+                  <p className="text-sm sm:text-base text-muted-foreground">{step.description}</p>
                   {index < steps.length - 1 && (
-                    <div className="absolute hidden md:block top-8 left-[calc(50%+4rem)] w-[calc(100%-8rem)] h-0.5 bg-border" />
+                    <div className="absolute hidden sm:block top-7 left-[calc(50%+3.5rem)] w-[calc(100%-7rem)] h-0.5 bg-border" />
                   )}
                 </motion.div>
               ))}
@@ -186,15 +235,15 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="testimonials" className="py-20">
+        <section id="testimonials" className="py-12 sm:py-16 md:py-20">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div className="text-center mb-10 sm:mb-12 md:mb-16">
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
-                className="text-3xl font-bold tracking-tight sm:text-4xl mb-4"
+                className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-4"
               >
                 What Our Users Say
               </motion.h2>
@@ -203,12 +252,12 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-xl text-muted-foreground max-w-2xl mx-auto"
+                className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto"
               >
                 Join hundreds of satisfied institutions using I&apos;m Here
               </motion.p>
             </div>
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 sm:gap-8">
               {testimonials.map((testimonial, index) => (
                 <motion.div
                   key={testimonial.name}
@@ -216,7 +265,7 @@ export default function HomePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.1 * index }}
-                  className="flex flex-col gap-4 rounded-xl border p-6 bg-card text-card-foreground shadow-sm"
+                  className="flex flex-col gap-4 rounded-xl border p-4 sm:p-6 bg-card text-card-foreground shadow-sm"
                 >
                   <div className="flex items-center gap-4">
                     <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
@@ -224,17 +273,17 @@ export default function HomePage() {
                     </div>
                     <div>
                       <h4 className="font-semibold">{testimonial.name}</h4>
-                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground">{testimonial.role}</p>
                     </div>
                   </div>
-                  <p className="text-muted-foreground italic">&quot;{testimonial.quote}&quot;</p>
+                  <p className="text-sm sm:text-base text-muted-foreground italic">&quot;{testimonial.quote}&quot;</p>
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="py-20 bg-primary text-primary-foreground">
+        <section className="py-12 sm:py-16 md:py-20 bg-primary text-primary-foreground">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -243,20 +292,20 @@ export default function HomePage() {
               transition={{ duration: 0.5 }}
               className="flex flex-col items-center text-center gap-6 max-w-2xl mx-auto"
             >
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
                 Ready to transform your attendance system?
               </h2>
-              <p className="text-xl text-primary-foreground/80">
+              <p className="text-base sm:text-lg md:text-xl text-primary-foreground/80">
                 Join thousands of educators and administrators who have simplified their attendance tracking.
               </p>
-              <Button size="lg" variant="secondary" className="font-medium">
+              <Button size="lg" variant="secondary" className="font-medium w-full sm:w-auto">
                 Get Started Today
               </Button>
             </motion.div>
           </div>
         </section>
       </main>
-      <footer className="border-t py-12 bg-muted/30">
+      <footer className="border-t py-8 sm:py-10 md:py-12 bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between gap-8">
             <div className="flex flex-col gap-2 max-w-xs">
@@ -268,7 +317,7 @@ export default function HomePage() {
                 Smart attendance tracking system built with Next.js and Firebase, using QR codes for seamless check-ins.
               </p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 sm:gap-8">
               <div className="flex flex-col gap-2">
                 <h3 className="font-semibold">Product</h3>
                 <nav className="flex flex-col gap-2">
