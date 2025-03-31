@@ -172,20 +172,6 @@ export default function LoginPage() {
                 </p>
               </motion.div>
 
-              <div className="relative w-full max-w-md aspect-[16/9] rounded-lg overflow-hidden shadow-xl mb-8">
-                <Image
-                  src="/placeholder.svg?height=450&width=800"
-                  alt="Dashboard preview"
-                  width={800}
-                  height={450}
-                  className="object-cover"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                  <p className="text-sm font-medium">Powerful analytics dashboard</p>
-                </div>
-              </div>
 
               <div className="grid grid-cols-3 gap-4 w-full max-w-md">
                 {stats.map((stat, index) => (

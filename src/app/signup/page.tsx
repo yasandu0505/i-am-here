@@ -317,30 +317,8 @@ export default function SignupPage() {
                   </p>
                 </motion.div>
 
-                <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.5, duration: 0.5 }}
-                  className="w-full max-w-md mb-8"
-                >
-                  <div className="relative aspect-video rounded-lg overflow-hidden shadow-xl">
-                    <Image
-                      src="/placeholder.svg?height=450&width=800"
-                      alt="I'm Here in action"
-                      width={800}
-                      height={450}
-                      className="object-cover"
-                      priority
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-                    <div className="absolute bottom-0 left-0 p-6 text-white">
-                      <h3 className="text-xl font-bold mb-1">Streamlined Attendance</h3>
-                      <p className="text-sm text-white/80">
-                        QR code scanning makes taking attendance quick and accurate
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
+              
+              
 
                 <div className="grid grid-cols-2 gap-4 w-full max-w-md">
                   {features.map((feature, index) => (
