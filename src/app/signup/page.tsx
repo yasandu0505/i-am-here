@@ -4,14 +4,16 @@ import type React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { QrCode, ArrowRight, Eye, EyeOff, BarChart3, Shield, Users } from "lucide-react"
+import { QrCode, ArrowRight, Eye, EyeOff, BarChart3, Shield, Users, CheckCircle, Clock } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useAuth } from "@/contexts/auth-context"
 
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -25,10 +27,17 @@ export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [step, setStep] = useState(1)
   const [passwordStrength, setPasswordStrength] = useState(0)
+  const [acceptTerms, setAcceptTerms] = useState(false)
+  const [receiveUpdates, setReceiveUpdates] = useState(false)
+
+  const { signUp, error, setError } = useAuth()
+  const router = useRouter()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+
+    if (error) setError(null)
 
     if (name === "password") {
       // Simple password strength calculation
@@ -43,17 +52,28 @@ export default function SignupPage() {
 
   const handleRoleChange = (value: string) => {
     setFormData((prev) => ({ ...prev, role: value }))
+    if (error) setError(null)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      await signUp(formData.email, formData.password, {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        role: formData.role,
+        receiveUpdates: receiveUpdates,
+      })
+
+      router.push("/dashboard")
+    } catch (error) {
+      // Error is handled in the auth context
+    } finally {
       setIsLoading(false)
-      // Handle signup logic here
-    }, 1500)
+    }
   }
 
   const nextStep = () => {
@@ -117,6 +137,16 @@ export default function SignupPage() {
                 />
               </div>
             </div>
+
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-destructive/15 text-destructive text-sm p-3 rounded-md"
+              >
+                {error}
+              </motion.div>
+            )}
 
             <motion.form
               initial={{ opacity: 0, y: 20 }}
@@ -237,7 +267,13 @@ export default function SignupPage() {
 
                   <div className="space-y-4 pt-4">
                     <div className="flex items-start space-x-2">
-                      <Checkbox id="terms" required className="mt-1" />
+                      <Checkbox
+                        id="terms"
+                        required
+                        className="mt-1"
+                        checked={acceptTerms}
+                        onCheckedChange={(checked) => setAcceptTerms(checked === true)}
+                      />
                       <Label htmlFor="terms" className="text-sm font-normal leading-tight">
                         I agree to the{" "}
                         <Link href="/terms" className="text-primary hover:underline">
@@ -251,7 +287,12 @@ export default function SignupPage() {
                     </div>
 
                     <div className="flex items-start space-x-2">
-                      <Checkbox id="updates" className="mt-1" />
+                      <Checkbox
+                        id="updates"
+                        className="mt-1"
+                        checked={receiveUpdates}
+                        onCheckedChange={(checked) => setReceiveUpdates(checked === true)}
+                      />
                       <Label htmlFor="updates" className="text-sm font-normal leading-tight">
                         I want to receive updates about product news and features
                       </Label>
@@ -262,7 +303,7 @@ export default function SignupPage() {
                     <Button type="button" variant="outline" className="flex-1" onClick={prevStep}>
                       Back
                     </Button>
-                    <Button type="submit" className="flex-1" disabled={isLoading || !formData.role}>
+                    <Button type="submit" className="flex-1" disabled={isLoading || !formData.role || !acceptTerms}>
                       {isLoading ? (
                         <motion.div
                           animate={{ rotate: 360 }}
@@ -316,8 +357,30 @@ export default function SignupPage() {
                   </p>
                 </motion.div>
 
-              
-              
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
+                  className="w-full max-w-md mb-8"
+                >
+                  <div className="bg-background/80 backdrop-blur-sm rounded-lg p-6 shadow-lg border border-primary/10">
+                    <div className="flex justify-center mb-4">
+                      <div className="rounded-full bg-primary/10 p-3">
+                        <CheckCircle className="h-8 w-8 text-primary" />
+                      </div>
+                    </div>
+                    <h3 className="text-xl font-bold text-center mb-2">Streamlined Attendance</h3>
+                    <p className="text-muted-foreground text-center">
+                      QR code scanning makes taking attendance quick and accurate, saving time and reducing errors
+                    </p>
+                    <div className="flex justify-center mt-4">
+                      <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-4 py-2 text-sm font-medium text-primary">
+                        <Clock className="h-4 w-4" />
+                        <span>Save up to 15 minutes per class</span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
 
                 <div className="grid grid-cols-2 gap-4 w-full max-w-md">
                   {features.map((feature, index) => (
