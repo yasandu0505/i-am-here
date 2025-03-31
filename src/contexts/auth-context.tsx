@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { createContext, useContext, useEffect, useState } from "react"
+import { FirebaseError } from "firebase/app"
 import {
   type User,
   createUserWithEmailAndPassword,
@@ -11,7 +12,7 @@ import {
   onAuthStateChanged,
   sendPasswordResetEmail,
 } from "firebase/auth"
-import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore"
+import { doc, setDoc, getDoc, serverTimestamp, type Timestamp } from "firebase/firestore"
 import { toast } from "sonner"
 import { auth, db } from "@/lib/firebase"
 
@@ -20,9 +21,9 @@ type UserData = {
   lastName: string
   email: string
   role: string
-  createdAt: any
-  lastLogin: any
-  receiveUpdates?: boolean // Add this optional property
+  createdAt: Timestamp
+  lastLogin: Timestamp
+  receiveUpdates?: boolean
 }
 
 type AuthContextType = {
@@ -90,9 +91,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       toast.success("Account created successfully", {
         description: "Welcome to I'm Here! You're now logged in.",
       })
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error signing up:", error)
-      const errorMessage = getFirebaseErrorMessage(error.code)
+      const errorMessage = getFirebaseErrorMessage(error instanceof FirebaseError ? error.code : "unknown-error")
       setError(errorMessage)
       toast.error("Error creating account", {
         description: errorMessage,
@@ -108,9 +109,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       toast.success("Login successful", {
         description: "Welcome back to I'm Here!",
       })
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error logging in:", error)
-      const errorMessage = getFirebaseErrorMessage(error.code)
+      const errorMessage = getFirebaseErrorMessage(error instanceof FirebaseError ? error.code : "unknown-error")
       setError(errorMessage)
       toast.error("Login failed", {
         description: errorMessage,
@@ -124,9 +125,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setError(null)
       await signOut(auth)
       toast.success("Logged out successfully")
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error logging out:", error)
-      const errorMessage = getFirebaseErrorMessage(error.code)
+      const errorMessage = getFirebaseErrorMessage(error instanceof FirebaseError ? error.code : "unknown-error")
       setError(errorMessage)
       toast.error("Error logging out", {
         description: errorMessage,
@@ -142,9 +143,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       toast.success("Password reset email sent", {
         description: "Check your inbox for instructions to reset your password.",
       })
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error resetting password:", error)
-      const errorMessage = getFirebaseErrorMessage(error.code)
+      const errorMessage = getFirebaseErrorMessage(error instanceof FirebaseError ? error.code : "unknown-error")
       setError(errorMessage)
       toast.error("Error resetting password", {
         description: errorMessage,
@@ -199,6 +200,8 @@ function getFirebaseErrorMessage(errorCode: string): string {
       return "Too many unsuccessful login attempts. Please try again later or reset your password."
     case "auth/network-request-failed":
       return "Network error. Please check your internet connection and try again."
+    case "unknown-error":
+      return "An error occurred. Please try again later."
     default:
       return "An error occurred. Please try again later."
   }
