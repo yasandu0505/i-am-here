@@ -20,11 +20,11 @@ export default function HomePage() {
   }, [])
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col overflow-x-hidden">
       <header
         className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled ? "bg-white/90 backdrop-blur-md shadow-sm" : "bg-transparent"}`}
       >
-        <div className="container flex h-16 items-center justify-between">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
             <QrCode className="h-6 w-6 text-primary" />
             <span className="text-xl font-bold">I&apos;m Here</span>
@@ -50,7 +50,7 @@ export default function HomePage() {
       </header>
       <main className="flex-1">
         <section className="relative overflow-hidden bg-gradient-to-b from-primary/10 to-background py-20 md:py-32">
-          <div className="container relative z-10">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid gap-8 md:grid-cols-2 md:gap-12 items-center">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -98,7 +98,7 @@ export default function HomePage() {
         </section>
 
         <section id="features" className="py-20">
-          <div className="container">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
@@ -141,7 +141,7 @@ export default function HomePage() {
         </section>
 
         <section id="how-it-works" className="py-20 bg-muted/50">
-          <div className="container">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
@@ -187,7 +187,7 @@ export default function HomePage() {
         </section>
 
         <section id="testimonials" className="py-20">
-          <div className="container">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
@@ -235,7 +235,7 @@ export default function HomePage() {
         </section>
 
         <section className="py-20 bg-primary text-primary-foreground">
-          <div className="container">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -257,7 +257,7 @@ export default function HomePage() {
         </section>
       </main>
       <footer className="border-t py-12 bg-muted/30">
-        <div className="container">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between gap-8">
             <div className="flex flex-col gap-2 max-w-xs">
               <div className="flex items-center gap-2">
