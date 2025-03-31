@@ -69,7 +69,7 @@ export default function SignupPage() {
       })
 
       router.push("/dashboard")
-    } catch (error) {
+    } catch (_error) {
       // Error is handled in the auth context
     } finally {
       setIsLoading(false)

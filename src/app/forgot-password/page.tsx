@@ -26,7 +26,7 @@ export default function ForgotPasswordPage() {
     try {
       await resetPassword(email)
       setIsSubmitted(true)
-    } catch (error) {
+    } catch (_error) {
       // Error is handled in the auth context
     } finally {
       setIsLoading(false)
