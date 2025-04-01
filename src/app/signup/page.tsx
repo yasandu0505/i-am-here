@@ -176,7 +176,6 @@ export default function SignupPage() {
                             required
                             value={formData.firstName}
                             onChange={handleChange}
-                            className="h-12"
                           />
                         </div>
                         <div className="space-y-2">
@@ -188,7 +187,6 @@ export default function SignupPage() {
                             required
                             value={formData.lastName}
                             onChange={handleChange}
-                            className="h-12"
                           />
                         </div>
                       </div>
@@ -201,7 +199,6 @@ export default function SignupPage() {
                           required
                           value={formData.studentId}
                           onChange={handleChange}
-                          className="h-12"
                         />
                       </div>
                       <div className="space-y-2">
@@ -214,7 +211,6 @@ export default function SignupPage() {
                           required
                           value={formData.email}
                           onChange={handleChange}
-                          className="h-12"
                         />
                       </div>
                       <div className="space-y-2">
@@ -230,7 +226,6 @@ export default function SignupPage() {
                             required
                             value={formData.password}
                             onChange={handleChange}
-                            className="h-12"
                           />
                           <button
                             type="button"
@@ -262,7 +257,7 @@ export default function SignupPage() {
                       </div>
                       <Button
                         type="button"
-                        className="w-full h-12 mt-4"
+                        className="w-full  mt-3"
                         onClick={nextStep}
                         disabled={!isStepOneValid()}
                       >
@@ -529,10 +524,10 @@ export default function SignupPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.5 }}
-              className="text-center text-base mt-6"
+              className="text-center text-sm"
             >
               Already have an account?{" "}
-              <Link href="/login" className="text-primary hover:underline font-medium">
+              <Link href="/login" className="text-primary hover:underline">
                 Sign in
               </Link>
             </motion.div>
