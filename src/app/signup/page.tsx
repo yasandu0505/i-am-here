@@ -257,7 +257,7 @@ export default function SignupPage() {
                       </div>
                       <Button
                         type="button"
-                        className="w-full  mt-3"
+                        className="w-full mt-3"
                         onClick={nextStep}
                         disabled={!isStepOneValid()}
                       >
@@ -274,13 +274,12 @@ export default function SignupPage() {
                           placeholder="University/School Name"
                           value={formData.institution}
                           onChange={handleChange}
-                          className="h-12"
                         />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="role">Your Role</Label>
                         <Select value={formData.role} onValueChange={(value) => handleSelectChange("role", value)}>
-                          <SelectTrigger className="h-12">
+                          <SelectTrigger >
                             <SelectValue placeholder="Select your role" />
                           </SelectTrigger>
                           <SelectContent>
@@ -316,10 +315,10 @@ export default function SignupPage() {
                       </div>
 
                       <div className="flex gap-4 pt-4">
-                        <Button type="button" variant="outline" className="flex-1 h-12" onClick={prevStep}>
+                        <Button type="button" variant="outline" className="flex-1" onClick={prevStep}>
                           Back
                         </Button>
-                        <Button type="submit" className="flex-1 h-12" disabled={isLoading}>
+                        <Button type="submit" className="flex-1 " disabled={isLoading}>
                           {isLoading ? (
                             <motion.div
                               animate={{ rotate: 360 }}
@@ -346,7 +345,6 @@ export default function SignupPage() {
                           required
                           value={formData.organizationName}
                           onChange={handleChange}
-                          className="h-12"
                         />
                       </div>
                       <div className="grid grid-cols-2 gap-4">
@@ -359,7 +357,6 @@ export default function SignupPage() {
                             required
                             value={formData.firstName}
                             onChange={handleChange}
-                            className="h-12"
                           />
                         </div>
                         <div className="space-y-2">
@@ -371,7 +368,6 @@ export default function SignupPage() {
                             required
                             value={formData.lastName}
                             onChange={handleChange}
-                            className="h-12"
                           />
                         </div>
                       </div>
@@ -385,7 +381,6 @@ export default function SignupPage() {
                           required
                           value={formData.email}
                           onChange={handleChange}
-                          className="h-12"
                         />
                       </div>
                       <div className="space-y-2">
@@ -401,7 +396,6 @@ export default function SignupPage() {
                             required
                             value={formData.password}
                             onChange={handleChange}
-                            className="h-12"
                           />
                           <button
                             type="button"
@@ -433,7 +427,7 @@ export default function SignupPage() {
                       </div>
                       <Button
                         type="button"
-                        className="w-full h-12 mt-4"
+                        className="w-full mt-2"
                         onClick={nextStep}
                         disabled={!isStepOneValid()}
                       >
@@ -448,7 +442,7 @@ export default function SignupPage() {
                           value={formData.organizationType}
                           onValueChange={(value) => handleSelectChange("organizationType", value)}
                         >
-                          <SelectTrigger className="h-12">
+                          <SelectTrigger>
                             <SelectValue placeholder="Select organization type" />
                           </SelectTrigger>
                           <SelectContent>
@@ -463,7 +457,7 @@ export default function SignupPage() {
                       <div className="space-y-2">
                         <Label htmlFor="role">Your Role</Label>
                         <Select value={formData.role} onValueChange={(value) => handleSelectChange("role", value)}>
-                          <SelectTrigger className="h-12">
+                          <SelectTrigger >
                             <SelectValue placeholder="Select your role" />
                           </SelectTrigger>
                           <SelectContent>
@@ -500,10 +494,10 @@ export default function SignupPage() {
                       </div>
 
                       <div className="flex gap-4 pt-4">
-                        <Button type="button" variant="outline" className="flex-1 h-12" onClick={prevStep}>
+                        <Button type="button" variant="outline" className="flex-1" onClick={prevStep}>
                           Back
                         </Button>
-                        <Button type="submit" className="flex-1 h-12" disabled={isLoading}>
+                        <Button type="submit" className="flex-1 " disabled={isLoading}>
                           {isLoading ? (
                             <motion.div
                               animate={{ rotate: 360 }}
