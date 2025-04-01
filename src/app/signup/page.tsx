@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { QrCode, ArrowRight, Eye, EyeOff, BarChart3, Shield, Users, GraduationCap, Building } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -88,6 +88,54 @@ export default function SignupPage() {
     return true
   }
 
+  const studentFeatures = [
+    {
+      title: "QR Code Check-ins",
+      description: "Fast and reliable attendance tracking",
+      icon: <QrCode className="h-4 w-4 text-primary" />,
+    },
+    {
+      title: "Attendance History",
+      description: "Track your class attendance over time",
+      icon: <BarChart3 className="h-4 w-4 text-primary" />,
+    },
+    {
+      title: "Secure Data",
+      description: "Your information is always protected",
+      icon: <Shield className="h-4 w-4 text-primary" />,
+    },
+    {
+      title: "Connect with Peers",
+      description: "Join study groups and connect with classmates",
+      icon: <Users className="h-4 w-4 text-primary" />,
+    },
+  ]
+
+  const organizationFeatures = [
+    {
+      title: "QR Code Check-ins",
+      description: "Fast and reliable attendance tracking",
+      icon: <QrCode className="h-4 w-4 text-primary" />,
+    },
+    {
+      title: "Real-time Analytics",
+      description: "Instant insights into attendance patterns",
+      icon: <BarChart3 className="h-4 w-4 text-primary" />,
+    },
+    {
+      title: "Secure Data",
+      description: "Enterprise-grade security for your data",
+      icon: <Shield className="h-4 w-4 text-primary" />,
+    },
+    {
+      title: "User Management",
+      description: "Easily manage students and classes",
+      icon: <Users className="h-4 w-4 text-primary" />,
+    },
+  ]
+
+  const currentFeatures = accountType === "student" ? studentFeatures : organizationFeatures
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <header className="flex h-16 items-center border-b bg-background px-4 md:px-6">
@@ -112,6 +160,7 @@ export default function SignupPage() {
           >
             <div className="space-y-2">
               <motion.h1
+                key={accountType} // Add key to force re-render on account type change
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
@@ -255,12 +304,7 @@ export default function SignupPage() {
                           </div>
                         )}
                       </div>
-                      <Button
-                        type="button"
-                        className="w-full mt-3"
-                        onClick={nextStep}
-                        disabled={!isStepOneValid()}
-                      >
+                      <Button type="button" className="w-full mt-3" onClick={nextStep} disabled={!isStepOneValid()}>
                         Continue <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </>
@@ -279,7 +323,7 @@ export default function SignupPage() {
                       <div className="space-y-2">
                         <Label htmlFor="role">Your Role</Label>
                         <Select value={formData.role} onValueChange={(value) => handleSelectChange("role", value)}>
-                          <SelectTrigger >
+                          <SelectTrigger>
                             <SelectValue placeholder="Select your role" />
                           </SelectTrigger>
                           <SelectContent>
@@ -425,12 +469,7 @@ export default function SignupPage() {
                           </div>
                         )}
                       </div>
-                      <Button
-                        type="button"
-                        className="w-full mt-2"
-                        onClick={nextStep}
-                        disabled={!isStepOneValid()}
-                      >
+                      <Button type="button" className="w-full mt-2" onClick={nextStep} disabled={!isStepOneValid()}>
                         Continue <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </>
@@ -457,7 +496,7 @@ export default function SignupPage() {
                       <div className="space-y-2">
                         <Label htmlFor="role">Your Role</Label>
                         <Select value={formData.role} onValueChange={(value) => handleSelectChange("role", value)}>
-                          <SelectTrigger >
+                          <SelectTrigger>
                             <SelectValue placeholder="Select your role" />
                           </SelectTrigger>
                           <SelectContent>
@@ -527,6 +566,7 @@ export default function SignupPage() {
             </motion.div>
           </motion.div>
 
+          {/* Improved side panel with better animations */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -539,6 +579,7 @@ export default function SignupPage() {
             <div className="relative z-10 h-full flex flex-col p-8">
               <div className="flex-1 flex flex-col items-center justify-center text-center">
                 <motion.div
+                  key={`header-${accountType}`} // Force re-render on account type change
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: 0.3, duration: 0.5 }}
@@ -556,21 +597,37 @@ export default function SignupPage() {
                 </motion.div>
 
                 <div className="grid grid-cols-2 gap-4 w-full max-w-md">
-                  {(accountType === "student" ? studentFeatures : organizationFeatures).map((feature, index) => (
-                    <motion.div
-                      key={feature.title}
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: 0.6 + index * 0.1, duration: 0.5 }}
-                      className="bg-background/80 backdrop-blur-sm rounded-lg p-4 flex items-start gap-3 shadow-sm"
-                    >
-                      <div className="rounded-full bg-primary/10 p-2 shrink-0">{feature.icon}</div>
-                      <div>
-                        <h4 className="text-sm font-medium">{feature.title}</h4>
-                        <p className="text-xs text-muted-foreground mt-1">{feature.description}</p>
-                      </div>
-                    </motion.div>
-                  ))}
+                  <AnimatePresence mode="wait">
+                    {currentFeatures.map((feature, index) => (
+                      <motion.div
+                        key={`${accountType}-${feature.title}`} // Unique key based on account type and feature
+                        initial={{ y: 20, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        exit={{ y: -20, opacity: 0 }}
+                        transition={{
+                          delay: 0.1 + index * 0.1,
+                          duration: 0.4,
+                          type: "spring",
+                          stiffness: 100,
+                        }}
+                        className="bg-background/80 backdrop-blur-sm rounded-lg p-4 flex items-start gap-3 shadow-sm"
+                      >
+                        <div className="rounded-full bg-primary/10 p-2 shrink-0">
+                          <motion.div
+                            initial={{ rotate: -10, scale: 0.9 }}
+                            animate={{ rotate: 0, scale: 1 }}
+                            transition={{ delay: 0.2 + index * 0.1, duration: 0.3 }}
+                          >
+                            {feature.icon}
+                          </motion.div>
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-medium">{feature.title}</h4>
+                          <p className="text-xs text-muted-foreground mt-1">{feature.description}</p>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
                 </div>
               </div>
 
@@ -585,15 +642,22 @@ export default function SignupPage() {
                 </div>
                 <div className="flex items-center gap-1">
                   {[...Array(5)].map((_, i) => (
-                    <div key={i} className="text-primary">
+                    <motion.div
+                      key={i}
+                      initial={{ scale: 0.5, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ delay: 1.2 + i * 0.1, duration: 0.3 }}
+                      className="text-primary"
+                    >
                       ★
-                    </div>
+                    </motion.div>
                   ))}
                   <span className="ml-1">4.9/5</span>
                 </div>
               </motion.div>
             </div>
 
+            {/* Animated background elements */}
             <motion.div
               animate={{
                 scale: [1, 1.2, 1],
@@ -625,50 +689,4 @@ export default function SignupPage() {
     </div>
   )
 }
-
-const studentFeatures = [
-  {
-    title: "QR Code Check-ins",
-    description: "Fast and reliable attendance tracking",
-    icon: <QrCode className="h-4 w-4 text-primary" />,
-  },
-  {
-    title: "Attendance History",
-    description: "Track your class attendance over time",
-    icon: <BarChart3 className="h-4 w-4 text-primary" />,
-  },
-  {
-    title: "Secure Data",
-    description: "Your information is always protected",
-    icon: <Shield className="h-4 w-4 text-primary" />,
-  },
-  {
-    title: "Connect with Peers",
-    description: "Join study groups and connect with classmates",
-    icon: <Users className="h-4 w-4 text-primary" />,
-  },
-]
-
-const organizationFeatures = [
-  {
-    title: "QR Code Check-ins",
-    description: "Fast and reliable attendance tracking",
-    icon: <QrCode className="h-4 w-4 text-primary" />,
-  },
-  {
-    title: "Real-time Analytics",
-    description: "Instant insights into attendance patterns",
-    icon: <BarChart3 className="h-4 w-4 text-primary" />,
-  },
-  {
-    title: "Secure Data",
-    description: "Enterprise-grade security for your data",
-    icon: <Shield className="h-4 w-4 text-primary" />,
-  },
-  {
-    title: "User Management",
-    description: "Easily manage students and classes",
-    icon: <Users className="h-4 w-4 text-primary" />,
-  },
-]
 
