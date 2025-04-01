@@ -108,29 +108,29 @@ export default function SignupPage() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="flex flex-col justify-center space-y-6 p-4 md:p-8"
+            className="flex flex-col justify-center space-y-8 p-6 md:p-10 max-w-md mx-auto w-full"
           >
             <div className="space-y-2">
               <motion.h1
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-3xl font-bold tracking-tight sm:text-4xl"
+                className="text-4xl font-bold tracking-tight"
               >
-                Create an account
+                {accountType === "student" ? "Student signup" : "Organization signup"}
               </motion.h1>
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="text-muted-foreground"
+                className="text-muted-foreground text-xl"
               >
-                Join thousands of users on I&apos;m Here
+                Create your account to get started
               </motion.p>
             </div>
 
             <Tabs defaultValue="student" value={accountType} onValueChange={setAccountType} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-6">
+              <TabsList className="grid w-full grid-cols-2 mb-8">
                 <TabsTrigger value="student" className="flex items-center gap-2">
                   <GraduationCap className="h-4 w-4" />
                   <span>Student</span>
@@ -141,7 +141,7 @@ export default function SignupPage() {
                 </TabsTrigger>
               </TabsList>
 
-              <div className="relative mb-6">
+              <div className="relative mb-8">
                 <div className="flex justify-between mb-2">
                   <div className={`text-sm font-medium ${step === 1 ? "text-primary" : ""}`}>Account Details</div>
                   <div className={`text-sm font-medium ${step === 2 ? "text-primary" : ""}`}>
@@ -161,9 +161,9 @@ export default function SignupPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
                 onSubmit={handleSubmit}
-                className="space-y-4"
+                className="space-y-6"
               >
-                <TabsContent value="student" className="mt-0">
+                <TabsContent value="student" className="mt-0 space-y-6">
                   {step === 1 ? (
                     <>
                       <div className="grid grid-cols-2 gap-4">
@@ -176,6 +176,7 @@ export default function SignupPage() {
                             required
                             value={formData.firstName}
                             onChange={handleChange}
+                            className="h-12"
                           />
                         </div>
                         <div className="space-y-2">
@@ -187,6 +188,7 @@ export default function SignupPage() {
                             required
                             value={formData.lastName}
                             onChange={handleChange}
+                            className="h-12"
                           />
                         </div>
                       </div>
@@ -199,6 +201,7 @@ export default function SignupPage() {
                           required
                           value={formData.studentId}
                           onChange={handleChange}
+                          className="h-12"
                         />
                       </div>
                       <div className="space-y-2">
@@ -211,10 +214,13 @@ export default function SignupPage() {
                           required
                           value={formData.email}
                           onChange={handleChange}
+                          className="h-12"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="password">Password</Label>
+                        <div className="flex justify-between">
+                          <Label htmlFor="password">Password</Label>
+                        </div>
                         <div className="relative">
                           <Input
                             id="password"
@@ -224,13 +230,14 @@ export default function SignupPage() {
                             required
                             value={formData.password}
                             onChange={handleChange}
+                            className="h-12"
                           />
                           <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
                             className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                           >
-                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                            {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                           </button>
                         </div>
                         {formData.password && (
@@ -253,7 +260,12 @@ export default function SignupPage() {
                           </div>
                         )}
                       </div>
-                      <Button type="button" className="w-full" onClick={nextStep} disabled={!isStepOneValid()}>
+                      <Button
+                        type="button"
+                        className="w-full h-12 mt-4"
+                        onClick={nextStep}
+                        disabled={!isStepOneValid()}
+                      >
                         Continue <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </>
@@ -267,12 +279,13 @@ export default function SignupPage() {
                           placeholder="University/School Name"
                           value={formData.institution}
                           onChange={handleChange}
+                          className="h-12"
                         />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="role">Your Role</Label>
                         <Select value={formData.role} onValueChange={(value) => handleSelectChange("role", value)}>
-                          <SelectTrigger>
+                          <SelectTrigger className="h-12">
                             <SelectValue placeholder="Select your role" />
                           </SelectTrigger>
                           <SelectContent>
@@ -285,9 +298,9 @@ export default function SignupPage() {
                       </div>
 
                       <div className="space-y-4 pt-4">
-                        <div className="flex items-start space-x-2">
-                          <Checkbox id="terms" required className="mt-1" />
-                          <Label htmlFor="terms" className="text-sm font-normal leading-tight">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="terms" required />
+                          <Label htmlFor="terms" className="text-sm font-normal">
                             I agree to the{" "}
                             <Link href="/terms" className="text-primary hover:underline">
                               Terms of Service
@@ -299,19 +312,19 @@ export default function SignupPage() {
                           </Label>
                         </div>
 
-                        <div className="flex items-start space-x-2">
-                          <Checkbox id="updates" className="mt-1" />
-                          <Label htmlFor="updates" className="text-sm font-normal leading-tight">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="updates" />
+                          <Label htmlFor="updates" className="text-sm font-normal">
                             I want to receive updates about product news and features
                           </Label>
                         </div>
                       </div>
 
-                      <div className="flex gap-4 pt-2">
-                        <Button type="button" variant="outline" className="flex-1" onClick={prevStep}>
+                      <div className="flex gap-4 pt-4">
+                        <Button type="button" variant="outline" className="flex-1 h-12" onClick={prevStep}>
                           Back
                         </Button>
-                        <Button type="submit" className="flex-1" disabled={isLoading}>
+                        <Button type="submit" className="flex-1 h-12" disabled={isLoading}>
                           {isLoading ? (
                             <motion.div
                               animate={{ rotate: 360 }}
@@ -326,7 +339,7 @@ export default function SignupPage() {
                   )}
                 </TabsContent>
 
-                <TabsContent value="organization" className="mt-0">
+                <TabsContent value="organization" className="mt-0 space-y-6">
                   {step === 1 ? (
                     <>
                       <div className="space-y-2">
@@ -338,6 +351,7 @@ export default function SignupPage() {
                           required
                           value={formData.organizationName}
                           onChange={handleChange}
+                          className="h-12"
                         />
                       </div>
                       <div className="grid grid-cols-2 gap-4">
@@ -350,6 +364,7 @@ export default function SignupPage() {
                             required
                             value={formData.firstName}
                             onChange={handleChange}
+                            className="h-12"
                           />
                         </div>
                         <div className="space-y-2">
@@ -361,6 +376,7 @@ export default function SignupPage() {
                             required
                             value={formData.lastName}
                             onChange={handleChange}
+                            className="h-12"
                           />
                         </div>
                       </div>
@@ -374,10 +390,13 @@ export default function SignupPage() {
                           required
                           value={formData.email}
                           onChange={handleChange}
+                          className="h-12"
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="password">Password</Label>
+                        <div className="flex justify-between">
+                          <Label htmlFor="password">Password</Label>
+                        </div>
                         <div className="relative">
                           <Input
                             id="password"
@@ -387,13 +406,14 @@ export default function SignupPage() {
                             required
                             value={formData.password}
                             onChange={handleChange}
+                            className="h-12"
                           />
                           <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
                             className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                           >
-                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                            {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                           </button>
                         </div>
                         {formData.password && (
@@ -416,7 +436,12 @@ export default function SignupPage() {
                           </div>
                         )}
                       </div>
-                      <Button type="button" className="w-full" onClick={nextStep} disabled={!isStepOneValid()}>
+                      <Button
+                        type="button"
+                        className="w-full h-12 mt-4"
+                        onClick={nextStep}
+                        disabled={!isStepOneValid()}
+                      >
                         Continue <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </>
@@ -428,7 +453,7 @@ export default function SignupPage() {
                           value={formData.organizationType}
                           onValueChange={(value) => handleSelectChange("organizationType", value)}
                         >
-                          <SelectTrigger>
+                          <SelectTrigger className="h-12">
                             <SelectValue placeholder="Select organization type" />
                           </SelectTrigger>
                           <SelectContent>
@@ -443,7 +468,7 @@ export default function SignupPage() {
                       <div className="space-y-2">
                         <Label htmlFor="role">Your Role</Label>
                         <Select value={formData.role} onValueChange={(value) => handleSelectChange("role", value)}>
-                          <SelectTrigger>
+                          <SelectTrigger className="h-12">
                             <SelectValue placeholder="Select your role" />
                           </SelectTrigger>
                           <SelectContent>
@@ -457,9 +482,9 @@ export default function SignupPage() {
                       </div>
 
                       <div className="space-y-4 pt-4">
-                        <div className="flex items-start space-x-2">
-                          <Checkbox id="terms" required className="mt-1" />
-                          <Label htmlFor="terms" className="text-sm font-normal leading-tight">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="terms" required />
+                          <Label htmlFor="terms" className="text-sm font-normal">
                             I agree to the{" "}
                             <Link href="/terms" className="text-primary hover:underline">
                               Terms of Service
@@ -471,19 +496,19 @@ export default function SignupPage() {
                           </Label>
                         </div>
 
-                        <div className="flex items-start space-x-2">
-                          <Checkbox id="updates" className="mt-1" />
-                          <Label htmlFor="updates" className="text-sm font-normal leading-tight">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox id="updates" />
+                          <Label htmlFor="updates" className="text-sm font-normal">
                             I want to receive updates about product news and features
                           </Label>
                         </div>
                       </div>
 
-                      <div className="flex gap-4 pt-2">
-                        <Button type="button" variant="outline" className="flex-1" onClick={prevStep}>
+                      <div className="flex gap-4 pt-4">
+                        <Button type="button" variant="outline" className="flex-1 h-12" onClick={prevStep}>
                           Back
                         </Button>
-                        <Button type="submit" className="flex-1" disabled={isLoading}>
+                        <Button type="submit" className="flex-1 h-12" disabled={isLoading}>
                           {isLoading ? (
                             <motion.div
                               animate={{ rotate: 360 }}
@@ -504,10 +529,10 @@ export default function SignupPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.5 }}
-              className="text-center text-sm"
+              className="text-center text-base mt-6"
             >
               Already have an account?{" "}
-              <Link href="/login" className="text-primary hover:underline">
+              <Link href="/login" className="text-primary hover:underline font-medium">
                 Sign in
               </Link>
             </motion.div>
