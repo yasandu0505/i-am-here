@@ -5,13 +5,14 @@ import type React from "react"
 import { useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { QrCode, ArrowRight, Eye, EyeOff, BarChart3, Shield, Users } from "lucide-react"
+import { QrCode, ArrowRight, Eye, EyeOff, BarChart3, Shield, Users, GraduationCap, Building } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -21,10 +22,17 @@ export default function SignupPage() {
     email: "",
     password: "",
     role: "",
+    // Organization specific fields
+    organizationName: "",
+    organizationType: "",
+    // Student specific fields
+    studentId: "",
+    institution: "",
   })
   const [isLoading, setIsLoading] = useState(false)
   const [step, setStep] = useState(1)
   const [passwordStrength, setPasswordStrength] = useState(0)
+  const [accountType, setAccountType] = useState("student")
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -41,8 +49,8 @@ export default function SignupPage() {
     }
   }
 
-  const handleRoleChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, role: value }))
+  const handleSelectChange = (name: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -62,6 +70,22 @@ export default function SignupPage() {
 
   const prevStep = () => {
     setStep(1)
+  }
+
+  const isStepOneValid = () => {
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.password || passwordStrength < 2) {
+      return false
+    }
+
+    if (accountType === "organization" && !formData.organizationName) {
+      return false
+    }
+
+    if (accountType === "student" && !formData.studentId) {
+      return false
+    }
+
+    return true
   }
 
   return (
@@ -101,181 +125,380 @@ export default function SignupPage() {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="text-muted-foreground"
               >
-                Join thousands of educators using I&apos;m Here
+                Join thousands of users on I&apos;m Here
               </motion.p>
             </div>
 
-            <div className="relative mb-6">
-              <div className="flex justify-between mb-2">
-                <div className={`text-sm font-medium ${step === 1 ? "text-primary" : ""}`}>Account Details</div>
-                <div className={`text-sm font-medium ${step === 2 ? "text-primary" : ""}`}>Role & Preferences</div>
-              </div>
-              <div className="overflow-hidden rounded-full bg-muted h-2">
-                <div
-                  className="h-full bg-primary transition-all duration-300"
-                  style={{ width: step === 1 ? "50%" : "100%" }}
-                />
-              </div>
-            </div>
+            <Tabs defaultValue="student" value={accountType} onValueChange={setAccountType} className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-6">
+                <TabsTrigger value="student" className="flex items-center gap-2">
+                  <GraduationCap className="h-4 w-4" />
+                  <span>Student</span>
+                </TabsTrigger>
+                <TabsTrigger value="organization" className="flex items-center gap-2">
+                  <Building className="h-4 w-4" />
+                  <span>Organization</span>
+                </TabsTrigger>
+              </TabsList>
 
-            <motion.form
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              onSubmit={handleSubmit}
-              className="space-y-4"
-            >
-              {step === 1 ? (
-                <>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="firstName">First Name</Label>
-                      <Input
-                        id="firstName"
-                        name="firstName"
-                        placeholder="John"
-                        required
-                        value={formData.firstName}
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="lastName">Last Name</Label>
-                      <Input
-                        id="lastName"
-                        name="lastName"
-                        placeholder="Doe"
-                        required
-                        value={formData.lastName}
-                        onChange={handleChange}
-                      />
-                    </div>
+              <div className="relative mb-6">
+                <div className="flex justify-between mb-2">
+                  <div className={`text-sm font-medium ${step === 1 ? "text-primary" : ""}`}>Account Details</div>
+                  <div className={`text-sm font-medium ${step === 2 ? "text-primary" : ""}`}>
+                    {accountType === "student" ? "Student Info" : "Organization Info"}
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="you@example.com"
-                      required
-                      value={formData.email}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
-                    <div className="relative">
-                      <Input
-                        id="password"
-                        name="password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="••••••••"
-                        required
-                        value={formData.password}
-                        onChange={handleChange}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                      >
-                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                      </button>
-                    </div>
-                    {formData.password && (
-                      <div className="mt-2">
-                        <div className="flex gap-1 mb-1">
-                          {[...Array(4)].map((_, i) => (
-                            <div
-                              key={i}
-                              className={`h-1 flex-1 rounded-full ${i < passwordStrength ? "bg-primary" : "bg-muted"}`}
-                            />
-                          ))}
+                </div>
+                <div className="overflow-hidden rounded-full bg-muted h-2">
+                  <div
+                    className="h-full bg-primary transition-all duration-300"
+                    style={{ width: step === 1 ? "50%" : "100%" }}
+                  />
+                </div>
+              </div>
+
+              <motion.form
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                onSubmit={handleSubmit}
+                className="space-y-4"
+              >
+                <TabsContent value="student" className="mt-0">
+                  {step === 1 ? (
+                    <>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="firstName">First Name</Label>
+                          <Input
+                            id="firstName"
+                            name="firstName"
+                            placeholder="John"
+                            required
+                            value={formData.firstName}
+                            onChange={handleChange}
+                          />
                         </div>
-                        <div className="text-xs text-muted-foreground">
-                          {passwordStrength === 0 && "Very weak"}
-                          {passwordStrength === 1 && "Weak"}
-                          {passwordStrength === 2 && "Medium"}
-                          {passwordStrength === 3 && "Strong"}
-                          {passwordStrength === 4 && "Very strong"}
+                        <div className="space-y-2">
+                          <Label htmlFor="lastName">Last Name</Label>
+                          <Input
+                            id="lastName"
+                            name="lastName"
+                            placeholder="Doe"
+                            required
+                            value={formData.lastName}
+                            onChange={handleChange}
+                          />
                         </div>
                       </div>
-                    )}
-                  </div>
-                  <Button
-                    type="button"
-                    className="w-full"
-                    onClick={nextStep}
-                    disabled={
-                      !formData.firstName ||
-                      !formData.lastName ||
-                      !formData.email ||
-                      !formData.password ||
-                      passwordStrength < 2
-                    }
-                  >
-                    Continue <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <div className="space-y-2">
-                    <Label htmlFor="role">Your Role</Label>
-                    <Select value={formData.role} onValueChange={handleRoleChange}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select your role" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="teacher">Teacher</SelectItem>
-                        <SelectItem value="administrator">Administrator</SelectItem>
-                        <SelectItem value="student">Student</SelectItem>
-                        <SelectItem value="parent">Parent</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-4 pt-4">
-                    <div className="flex items-start space-x-2">
-                      <Checkbox id="terms" required className="mt-1" />
-                      <Label htmlFor="terms" className="text-sm font-normal leading-tight">
-                        I agree to the{" "}
-                        <Link href="/terms" className="text-primary hover:underline">
-                          Terms of Service
-                        </Link>{" "}
-                        and{" "}
-                        <Link href="/privacy" className="text-primary hover:underline">
-                          Privacy Policy
-                        </Link>
-                      </Label>
-                    </div>
-
-                    <div className="flex items-start space-x-2">
-                      <Checkbox id="updates" className="mt-1" />
-                      <Label htmlFor="updates" className="text-sm font-normal leading-tight">
-                        I want to receive updates about product news and features
-                      </Label>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-4 pt-2">
-                    <Button type="button" variant="outline" className="flex-1" onClick={prevStep}>
-                      Back
-                    </Button>
-                    <Button type="submit" className="flex-1" disabled={isLoading || !formData.role}>
-                      {isLoading ? (
-                        <motion.div
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                          className="mr-2 h-4 w-4 border-2 border-current border-t-transparent rounded-full"
+                      <div className="space-y-2">
+                        <Label htmlFor="studentId">Student ID</Label>
+                        <Input
+                          id="studentId"
+                          name="studentId"
+                          placeholder="S12345"
+                          required
+                          value={formData.studentId}
+                          onChange={handleChange}
                         />
-                      ) : null}
-                      {isLoading ? "Creating account..." : "Create account"}
-                    </Button>
-                  </div>
-                </>
-              )}
-            </motion.form>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email</Label>
+                        <Input
+                          id="email"
+                          name="email"
+                          type="email"
+                          placeholder="you@example.com"
+                          required
+                          value={formData.email}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="password">Password</Label>
+                        <div className="relative">
+                          <Input
+                            id="password"
+                            name="password"
+                            type={showPassword ? "text" : "password"}
+                            placeholder="••••••••"
+                            required
+                            value={formData.password}
+                            onChange={handleChange}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                          >
+                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                          </button>
+                        </div>
+                        {formData.password && (
+                          <div className="mt-2">
+                            <div className="flex gap-1 mb-1">
+                              {[...Array(4)].map((_, i) => (
+                                <div
+                                  key={i}
+                                  className={`h-1 flex-1 rounded-full ${i < passwordStrength ? "bg-primary" : "bg-muted"}`}
+                                />
+                              ))}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {passwordStrength === 0 && "Very weak"}
+                              {passwordStrength === 1 && "Weak"}
+                              {passwordStrength === 2 && "Medium"}
+                              {passwordStrength === 3 && "Strong"}
+                              {passwordStrength === 4 && "Very strong"}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <Button type="button" className="w-full" onClick={nextStep} disabled={!isStepOneValid()}>
+                        Continue <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <div className="space-y-2">
+                        <Label htmlFor="institution">Institution</Label>
+                        <Input
+                          id="institution"
+                          name="institution"
+                          placeholder="University/School Name"
+                          value={formData.institution}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="role">Your Role</Label>
+                        <Select value={formData.role} onValueChange={(value) => handleSelectChange("role", value)}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select your role" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="undergraduate">Undergraduate Student</SelectItem>
+                            <SelectItem value="graduate">Graduate Student</SelectItem>
+                            <SelectItem value="phd">PhD Student</SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-4 pt-4">
+                        <div className="flex items-start space-x-2">
+                          <Checkbox id="terms" required className="mt-1" />
+                          <Label htmlFor="terms" className="text-sm font-normal leading-tight">
+                            I agree to the{" "}
+                            <Link href="/terms" className="text-primary hover:underline">
+                              Terms of Service
+                            </Link>{" "}
+                            and{" "}
+                            <Link href="/privacy" className="text-primary hover:underline">
+                              Privacy Policy
+                            </Link>
+                          </Label>
+                        </div>
+
+                        <div className="flex items-start space-x-2">
+                          <Checkbox id="updates" className="mt-1" />
+                          <Label htmlFor="updates" className="text-sm font-normal leading-tight">
+                            I want to receive updates about product news and features
+                          </Label>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-4 pt-2">
+                        <Button type="button" variant="outline" className="flex-1" onClick={prevStep}>
+                          Back
+                        </Button>
+                        <Button type="submit" className="flex-1" disabled={isLoading}>
+                          {isLoading ? (
+                            <motion.div
+                              animate={{ rotate: 360 }}
+                              transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                              className="mr-2 h-4 w-4 border-2 border-current border-t-transparent rounded-full"
+                            />
+                          ) : null}
+                          {isLoading ? "Creating account..." : "Create account"}
+                        </Button>
+                      </div>
+                    </>
+                  )}
+                </TabsContent>
+
+                <TabsContent value="organization" className="mt-0">
+                  {step === 1 ? (
+                    <>
+                      <div className="space-y-2">
+                        <Label htmlFor="organizationName">Organization Name</Label>
+                        <Input
+                          id="organizationName"
+                          name="organizationName"
+                          placeholder="Acme University"
+                          required
+                          value={formData.organizationName}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="firstName">Admin First Name</Label>
+                          <Input
+                            id="firstName"
+                            name="firstName"
+                            placeholder="John"
+                            required
+                            value={formData.firstName}
+                            onChange={handleChange}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="lastName">Admin Last Name</Label>
+                          <Input
+                            id="lastName"
+                            name="lastName"
+                            placeholder="Doe"
+                            required
+                            value={formData.lastName}
+                            onChange={handleChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Email</Label>
+                        <Input
+                          id="email"
+                          name="email"
+                          type="email"
+                          placeholder="admin@organization.com"
+                          required
+                          value={formData.email}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="password">Password</Label>
+                        <div className="relative">
+                          <Input
+                            id="password"
+                            name="password"
+                            type={showPassword ? "text" : "password"}
+                            placeholder="••••••••"
+                            required
+                            value={formData.password}
+                            onChange={handleChange}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                          >
+                            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                          </button>
+                        </div>
+                        {formData.password && (
+                          <div className="mt-2">
+                            <div className="flex gap-1 mb-1">
+                              {[...Array(4)].map((_, i) => (
+                                <div
+                                  key={i}
+                                  className={`h-1 flex-1 rounded-full ${i < passwordStrength ? "bg-primary" : "bg-muted"}`}
+                                />
+                              ))}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {passwordStrength === 0 && "Very weak"}
+                              {passwordStrength === 1 && "Weak"}
+                              {passwordStrength === 2 && "Medium"}
+                              {passwordStrength === 3 && "Strong"}
+                              {passwordStrength === 4 && "Very strong"}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <Button type="button" className="w-full" onClick={nextStep} disabled={!isStepOneValid()}>
+                        Continue <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <div className="space-y-2">
+                        <Label htmlFor="organizationType">Organization Type</Label>
+                        <Select
+                          value={formData.organizationType}
+                          onValueChange={(value) => handleSelectChange("organizationType", value)}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select organization type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="university">University</SelectItem>
+                            <SelectItem value="k12">K-12 School</SelectItem>
+                            <SelectItem value="college">College</SelectItem>
+                            <SelectItem value="training">Training Center</SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="role">Your Role</Label>
+                        <Select value={formData.role} onValueChange={(value) => handleSelectChange("role", value)}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select your role" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="administrator">Administrator</SelectItem>
+                            <SelectItem value="teacher">Teacher</SelectItem>
+                            <SelectItem value="staff">Staff</SelectItem>
+                            <SelectItem value="it">IT Department</SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-4 pt-4">
+                        <div className="flex items-start space-x-2">
+                          <Checkbox id="terms" required className="mt-1" />
+                          <Label htmlFor="terms" className="text-sm font-normal leading-tight">
+                            I agree to the{" "}
+                            <Link href="/terms" className="text-primary hover:underline">
+                              Terms of Service
+                            </Link>{" "}
+                            and{" "}
+                            <Link href="/privacy" className="text-primary hover:underline">
+                              Privacy Policy
+                            </Link>
+                          </Label>
+                        </div>
+
+                        <div className="flex items-start space-x-2">
+                          <Checkbox id="updates" className="mt-1" />
+                          <Label htmlFor="updates" className="text-sm font-normal leading-tight">
+                            I want to receive updates about product news and features
+                          </Label>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-4 pt-2">
+                        <Button type="button" variant="outline" className="flex-1" onClick={prevStep}>
+                          Back
+                        </Button>
+                        <Button type="submit" className="flex-1" disabled={isLoading}>
+                          {isLoading ? (
+                            <motion.div
+                              animate={{ rotate: 360 }}
+                              transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                              className="mr-2 h-4 w-4 border-2 border-current border-t-transparent rounded-full"
+                            />
+                          ) : null}
+                          {isLoading ? "Creating account..." : "Create account"}
+                        </Button>
+                      </div>
+                    </>
+                  )}
+                </TabsContent>
+              </motion.form>
+            </Tabs>
 
             <motion.div
               initial={{ opacity: 0 }}
@@ -312,15 +535,14 @@ export default function SignupPage() {
                   </div>
                   <h2 className="text-3xl font-bold mb-2">Join I&apos;m Here</h2>
                   <p className="text-muted-foreground max-w-sm mx-auto">
-                    The smart attendance tracking system trusted by thousands of educators worldwide
+                    {accountType === "student"
+                      ? "The smart attendance tracking system trusted by thousands of students worldwide"
+                      : "The smart attendance tracking system trusted by thousands of educational institutions worldwide"}
                   </p>
                 </motion.div>
 
-              
-              
-
                 <div className="grid grid-cols-2 gap-4 w-full max-w-md">
-                  {features.map((feature, index) => (
+                  {(accountType === "student" ? studentFeatures : organizationFeatures).map((feature, index) => (
                     <motion.div
                       key={feature.title}
                       initial={{ y: 20, opacity: 0 }}
@@ -344,7 +566,9 @@ export default function SignupPage() {
                 transition={{ delay: 1, duration: 0.5 }}
                 className="mt-auto pt-6 flex justify-between items-center text-sm text-muted-foreground"
               >
-                <div>Trusted by 500+ schools worldwide</div>
+                <div>
+                  {accountType === "student" ? "Used by 100,000+ students" : "Trusted by 500+ schools worldwide"}
+                </div>
                 <div className="flex items-center gap-1">
                   {[...Array(5)].map((_, i) => (
                     <div key={i} className="text-primary">
@@ -388,7 +612,30 @@ export default function SignupPage() {
   )
 }
 
-const features = [
+const studentFeatures = [
+  {
+    title: "QR Code Check-ins",
+    description: "Fast and reliable attendance tracking",
+    icon: <QrCode className="h-4 w-4 text-primary" />,
+  },
+  {
+    title: "Attendance History",
+    description: "Track your class attendance over time",
+    icon: <BarChart3 className="h-4 w-4 text-primary" />,
+  },
+  {
+    title: "Secure Data",
+    description: "Your information is always protected",
+    icon: <Shield className="h-4 w-4 text-primary" />,
+  },
+  {
+    title: "Connect with Peers",
+    description: "Join study groups and connect with classmates",
+    icon: <Users className="h-4 w-4 text-primary" />,
+  },
+]
+
+const organizationFeatures = [
   {
     title: "QR Code Check-ins",
     description: "Fast and reliable attendance tracking",
@@ -410,3 +657,4 @@ const features = [
     icon: <Users className="h-4 w-4 text-primary" />,
   },
 ]
+
