@@ -2,19 +2,16 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { motion, AnimatePresence } from "framer-motion"
-import { CheckCircle, Clock, BarChart3, QrCode, Shield, Users, Menu, X } from "lucide-react"
+import { motion } from "framer-motion"
+import { CheckCircle, Clock, BarChart3, QrCode, Shield, Users } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import DashboardPreview from "../../public/dashboard-preview"
 
 export default function HomePage() {
-  const [scrolled, setScrolled] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
     }
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
