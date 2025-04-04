@@ -95,11 +95,12 @@ export default function SignupPage() {
 
       // Redirect to dashboard
       router.push("/dashboard")
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Signup error:", error)
+      const errorMessage = error instanceof Error ? error.message : "There was an error creating your account."
       toast({
         title: "Signup failed",
-        description: error.message || "There was an error creating your account.",
+        description: errorMessage,
         variant: "destructive",
       })
     } finally {

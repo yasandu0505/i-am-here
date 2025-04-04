@@ -2,7 +2,8 @@
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
 import { onAuthStateChanged, type User as FirebaseUser } from "firebase/auth"
-import { useRouter } from "next/navigation"
+// Remove the unused import
+// import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebase"
 import { getUserData, type UserData } from "@/lib/auth"
 
@@ -24,7 +25,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<FirebaseUser | null>(null)
   const [userData, setUserData] = useState<UserData | null>(null)
   const [loading, setLoading] = useState(true)
-  const router = useRouter()
+  // Remove the unused router
+  // const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {

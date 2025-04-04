@@ -35,11 +35,12 @@ export default function LoginPage() {
         variant: "default",
       })
       router.push("/dashboard")
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Login error:", error)
+      const errorMessage = error instanceof Error ? error.message : "Please check your credentials and try again."
       toast({
         title: "Login failed",
-        description: error.message || "Please check your credentials and try again.",
+        description: errorMessage,
         variant: "destructive",
       })
     } finally {

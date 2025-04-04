@@ -5,7 +5,14 @@ import {
     type User as FirebaseUser,
     type UserCredential,
   } from "firebase/auth"
-  import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore"
+  import {
+    doc,
+    setDoc,
+    getDoc,
+    serverTimestamp,
+    type Timestamp,
+    type FieldValue, // Add this import
+  } from "firebase/firestore"
   import { auth } from "@/lib/firebase"
   import { db } from "@/lib/firebase"
   
@@ -17,8 +24,8 @@ import {
     firstName: string
     lastName: string
     role: UserRole
-    createdAt: any
-    updatedAt: any
+    createdAt: Timestamp | FieldValue | null // Update this type
+    updatedAt: Timestamp | FieldValue | null // Update this type
     // Student specific fields
     studentId?: string
     institution?: string
