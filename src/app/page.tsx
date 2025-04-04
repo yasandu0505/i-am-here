@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { CheckCircle, Clock, BarChart3, QrCode, Shield, Users } from "lucide-react"
