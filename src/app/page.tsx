@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { CheckCircle, Clock, BarChart3, QrCode, Shield, Users, Menu, X } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import DashboardPreview from "../../public/dashboard-preview"
 
 export default function HomePage() {
   const [scrolled, setScrolled] = useState(false)
@@ -151,14 +152,7 @@ export default function HomePage() {
                 className="relative mx-auto w-full max-w-md mt-8 md:mt-0"
               >
                 <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl">
-                  <Image
-                    src="/placeholder.svg?height=600&width=800"
-                    alt="I'm Here dashboard preview"
-                    width={800}
-                    height={600}
-                    className="object-cover"
-                    priority
-                  />
+                  <DashboardPreview />
                 </div>
                 <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-primary/20 blur-2xl" />
                 <div className="absolute -bottom-6 -left-6 h-24 w-24 rounded-full bg-primary/20 blur-2xl" />
