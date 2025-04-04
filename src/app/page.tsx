@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { CheckCircle, Clock, BarChart3, QrCode, Shield, Users, Menu, X } from "lucide-react"
