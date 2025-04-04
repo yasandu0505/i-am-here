@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { QrCode, Menu, X, LogOut, User } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { useAuth } from "@/context/auth-context"
-import { signOutUser } from "@/lib/auth"
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { QrCode, Menu, X, LogOut, User } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/context/auth-context";
+import { signOutUser } from "@/lib/auth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,21 +15,21 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 
 export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const { user, userData } = useAuth()
-  const router = useRouter()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user, userData } = useAuth();
+  const router = useRouter();
 
   const handleSignOut = async () => {
     try {
-      await signOutUser()
-      router.push("/")
+      await signOutUser();
+      router.push("/");
     } catch (error) {
-      console.error("Error signing out:", error)
+      console.error("Error signing out:", error);
     }
-  }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md shadow-sm">
@@ -41,17 +41,25 @@ export default function Navbar() {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">
-            Home
-          </Link>
-          <Link href="#features" className="text-sm font-medium hover:text-primary transition-colors">
+          <Link
+            href="#features"
+            className="text-sm font-medium hover:text-primary transition-colors"
+          >
             Features
           </Link>
-          {user && (
-            <Link href="/dashboard" className="text-sm font-medium hover:text-primary transition-colors">
-              Dashboard
-            </Link>
-          )}
+          <Link
+            href="#how-it-works"
+            className="text-sm font-medium hover:text-primary transition-colors"
+          >
+            How It Works
+          </Link>
+
+          <Link
+            href="#testimonials"
+            className="text-sm font-medium hover:text-primary transition-colors"
+          >
+            Testimonials
+          </Link>
         </nav>
 
         {/* Desktop Auth Buttons */}
@@ -74,7 +82,10 @@ export default function Navbar() {
                   <Link href="/profile">Profile</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleSignOut} className="text-red-500">
+                <DropdownMenuItem
+                  onClick={handleSignOut}
+                  className="text-red-500"
+                >
                   <LogOut className="h-4 w-4 mr-2" />
                   <span>Log out</span>
                 </DropdownMenuItem>
@@ -93,8 +104,16 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Menu Button */}
-        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 md:hidden" aria-label="Toggle menu">
-          {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="p-2 md:hidden"
+          aria-label="Toggle menu"
+        >
+          {mobileMenuOpen ? (
+            <X className="h-6 w-6" />
+          ) : (
+            <Menu className="h-6 w-6" />
+          )}
         </button>
       </div>
 
@@ -117,28 +136,27 @@ export default function Navbar() {
             >
               <nav className="flex flex-col gap-4">
                 <Link
-                  href="/"
-                  className="text-sm font-medium py-2 hover:text-primary transition-colors"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Home
-                </Link>
-                <Link
                   href="#features"
                   className="text-sm font-medium py-2 hover:text-primary transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Features
                 </Link>
-                {user && (
+                <Link
+                  href="#how-it-works"
+                  className="text-sm font-medium py-2 hover:text-primary transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  How It Works
+                </Link>
                   <Link
-                    href="/dashboard"
+                    href="#testimonials"
                     className="text-sm font-medium py-2 hover:text-primary transition-colors"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Dashboard
+                    Testimonials
                   </Link>
-                )}
+                
               </nav>
               <motion.div
                 initial={{ opacity: 0 }}
@@ -149,18 +167,28 @@ export default function Navbar() {
               >
                 {user ? (
                   <>
-                    <Link href="/profile" className="flex-1">
+                    <Link href="/dashboard" className="flex-1">
                       <Button variant="outline" size="sm" className="w-full">
-                        Profile
+                        Dashboard
                       </Button>
                     </Link>
-                    <Button size="sm" variant="destructive" className="flex-1" onClick={handleSignOut}>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      className="flex-1"
+                      onClick={handleSignOut}
+                    >
                       Log out
                     </Button>
                   </>
                 ) : (
                   <>
-                    <Button variant="outline" size="sm" className="flex-1" asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex-1"
+                      asChild
+                    >
                       <Link href="/login">Log in</Link>
                     </Button>
                     <Button size="sm" className="flex-1" asChild>
@@ -174,6 +202,5 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </header>
-  )
+  );
 }
-
