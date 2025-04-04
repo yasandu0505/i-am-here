@@ -148,7 +148,7 @@ export default function HomePage() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="relative mx-auto w-full max-w-md mt-8 md:mt-0"
+                className="relative mx-auto w-full max-w-md mt-5 md:mt-0"
               >
                 <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl">
                   <DashboardPreview />
