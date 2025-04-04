@@ -14,13 +14,13 @@ export default function DashboardPreview() {
       <rect width="800" height="600" rx="12" fill="#FCFCFC" />
 
       {/* Sidebar */}
-      <rect x="0" y="0" width="200" height="600" fill="#F3F4F6" />
-      <rect x="20" y="20" width="160" height="40" rx="8" fill="#E5E7EB" />
+      <rect x="0" y="0" width="180" height="600" fill="#F3F4F6" />
+      <rect x="20" y="20" width="140" height="40" rx="8" fill="#E5E7EB" />
       <circle cx="40" cy="40" r="12" fill="#6366F1" />
-      <rect x="60" y="34" width="100" height="12" rx="2" fill="#9CA3AF" />
+      <rect x="60" y="34" width="80" height="12" rx="2" fill="#9CA3AF" />
 
       {/* Sidebar Menu Items */}
-      <rect x="20" y="80" width="160" height="36" rx="6" fill="#6366F1" opacity="0.1" />
+      <rect x="20" y="80" width="140" height="36" rx="6" fill="#6366F1" opacity="0.1" />
       <circle cx="36" cy="98" r="8" fill="#6366F1" />
       <rect x="52" y="94" width="80" height="8" rx="2" fill="#6366F1" />
 
@@ -33,12 +33,12 @@ export default function DashboardPreview() {
       ))}
 
       {/* Top Navigation */}
-      <rect x="200" y="0" width="600" height="60" fill="#FFFFFF" />
-      <rect x="220" y="20" width="200" height="20" rx="4" fill="#F3F4F6" />
+      <rect x="180" y="0" width="620" height="60" fill="#FFFFFF" />
+      <rect x="200" y="20" width="200" height="20" rx="4" fill="#F3F4F6" />
       <circle cx="760" cy="30" r="16" fill="#F3F4F6" />
 
-      {/* Main Content */}
-      <rect x="220" y="80" width="560" height="100" rx="8" fill="#F9FAFB" stroke="#E5E7EB" strokeWidth="1" />
+      {/* Main Content Area */}
+      <rect x="200" y="80" width="580" height="100" rx="8" fill="#F9FAFB" stroke="#E5E7EB" strokeWidth="1" />
 
       {/* Stats Cards */}
       {[0, 1, 2, 3].map((i) => (
@@ -59,66 +59,96 @@ export default function DashboardPreview() {
         </React.Fragment>
       ))}
 
-      {/* Attendance Chart */}
-      <rect x="220" y="200" width="360" height="240" rx="8" fill="#FFFFFF" stroke="#E5E7EB" strokeWidth="1" />
-      <rect x="240" y="220" width="200" height="20" rx="4" fill="#111827" />
-
-      {/* Chart Bars */}
-      {[0, 1, 2, 3, 4, 5, 6].map((i) => {
-        const height = [160, 100, 140, 180, 120, 90, 130][i]
-        return (
-          <React.Fragment key={i}>
-            <rect
-              x={260 + i * 40}
-              y={400 - height}
-              width="24"
-              height={height}
-              rx="4"
-              fill="#6366F1"
-              opacity={0.7 + i * 0.05}
-            />
-            <rect x={260 + i * 40} y="410" width="24" height="10" rx="2" fill="#9CA3AF" />
-          </React.Fragment>
-        )
-      })}
-
-      {/* Recent Activity */}
-      <rect x="600" y="200" width="180" height="240" rx="8" fill="#FFFFFF" stroke="#E5E7EB" strokeWidth="1" />
-      <rect x="620" y="220" width="140" height="20" rx="4" fill="#111827" />
-
-      {/* Activity Items */}
-      {[0, 1, 2, 3, 4].map((i) => (
-        <React.Fragment key={i}>
-          <rect x="620" y={260 + i * 36} width="140" height="24" rx="4" fill="#F3F4F6" />
-          <circle cx="632" cy={272 + i * 36} r="6" fill={i < 2 ? "#6366F1" : "#9CA3AF"} />
-          <rect x="644" y={268 + i * 36} width="100" height="6" rx="2" fill="#9CA3AF" />
-          <rect x="644" y={278 + i * 36} width="60" height="4" rx="1" fill="#D1D5DB" />
-        </React.Fragment>
-      ))}
-
-      {/* QR Code Section */}
-      <rect x="220" y="460" width="560" height="120" rx="8" fill="#FFFFFF" stroke="#E5E7EB" strokeWidth="1" />
-      <rect x="240" y="480" width="200" height="20" rx="4" fill="#111827" />
+      {/* Central QR Code and Mobile Phone Illustration */}
+      <rect x="200" y="200" width="580" height="380" rx="8" fill="#FFFFFF" stroke="#E5E7EB" strokeWidth="1" />
+      <rect x="220" y="220" width="300" height="24" rx="4" fill="#111827" />
+      <rect x="220" y="254" width="200" height="16" rx="2" fill="#9CA3AF" />
 
       {/* QR Code */}
-      <rect x="240" y="510" width="70" height="70" rx="4" fill="#111827" />
+      <rect x="240" y="290" width="180" height="180" rx="8" fill="#111827" />
 
-      {/* QR Code Pattern */}
-      <rect x="250" y="520" width="10" height="10" fill="#FFFFFF" />
-      <rect x="270" y="520" width="10" height="10" fill="#FFFFFF" />
-      <rect x="290" y="520" width="10" height="10" fill="#FFFFFF" />
-      <rect x="250" y="540" width="10" height="10" fill="#FFFFFF" />
-      <rect x="270" y="540" width="10" height="10" fill="#FFFFFF" />
-      <rect x="290" y="540" width="10" height="10" fill="#FFFFFF" />
-      <rect x="250" y="560" width="10" height="10" fill="#FFFFFF" />
-      <rect x="270" y="560" width="10" height="10" fill="#FFFFFF" />
-      <rect x="290" y="560" width="10" height="10" fill="#FFFFFF" />
+      {/* QR Code Pattern - Larger and more detailed */}
+      <rect x="260" y="310" width="20" height="20" fill="#FFFFFF" />
+      <rect x="300" y="310" width="20" height="20" fill="#FFFFFF" />
+      <rect x="340" y="310" width="20" height="20" fill="#FFFFFF" />
+      <rect x="380" y="310" width="20" height="20" fill="#FFFFFF" />
 
-      {/* QR Code Info */}
-      <rect x="330" y="510" width="120" height="12" rx="2" fill="#111827" />
-      <rect x="330" y="530" width="200" height="8" rx="2" fill="#9CA3AF" />
-      <rect x="330" y="546" width="180" height="8" rx="2" fill="#9CA3AF" />
-      <rect x="330" y="570" width="100" height="10" rx="5" fill="#6366F1" />
+      <rect x="260" y="350" width="20" height="20" fill="#FFFFFF" />
+      <rect x="300" y="350" width="20" height="20" fill="#FFFFFF" />
+      <rect x="340" y="350" width="20" height="20" fill="#FFFFFF" />
+      <rect x="380" y="350" width="20" height="20" fill="#FFFFFF" />
+
+      <rect x="260" y="390" width="20" height="20" fill="#FFFFFF" />
+      <rect x="300" y="390" width="20" height="20" fill="#FFFFFF" />
+      <rect x="340" y="390" width="20" height="20" fill="#FFFFFF" />
+      <rect x="380" y="390" width="20" height="20" fill="#FFFFFF" />
+
+      <rect x="260" y="430" width="20" height="20" fill="#FFFFFF" />
+      <rect x="300" y="430" width="20" height="20" fill="#FFFFFF" />
+      <rect x="340" y="430" width="20" height="20" fill="#FFFFFF" />
+      <rect x="380" y="430" width="20" height="20" fill="#FFFFFF" />
+
+      {/* QR Code Center Logo */}
+      <rect x="300" y="350" width="60" height="60" rx="8" fill="#6366F1" />
+      <path d="M330 365 L330 395 M315 380 L345 380" stroke="#FFFFFF" strokeWidth="4" strokeLinecap="round" />
+
+      {/* Mobile Phone */}
+      <rect x="500" y="280" width="200" height="360" rx="20" fill="#111827" />
+      <rect x="510" y="290" width="180" height="320" rx="4" fill="#FFFFFF" />
+
+      {/* Phone Camera */}
+      <circle cx="600" cy="280" r="4" fill="#4B5563" />
+
+      {/* Phone Home Button */}
+      <rect x="580" y="620" width="40" height="10" rx="5" fill="#4B5563" />
+
+      {/* Phone Screen Content */}
+      <rect x="520" y="300" width="160" height="30" rx="4" fill="#F3F4F6" />
+      <rect x="530" y="310" width="100" height="10" rx="2" fill="#6366F1" />
+
+      {/* Camera Viewfinder */}
+      <rect x="530" y="340" width="140" height="180" rx="4" fill="#F9FAFB" />
+
+      {/* Scan Animation Lines */}
+      <rect x="540" y="380" width="120" height="2" rx="1" fill="#6366F1" opacity="0.7" />
+      <rect x="540" y="420" width="120" height="2" rx="1" fill="#6366F1" opacity="0.7" />
+      <rect x="540" y="460" width="120" height="2" rx="1" fill="#6366F1" opacity="0.7" />
+
+      {/* Scan Frame */}
+      <rect
+        x="550"
+        y="360"
+        width="100"
+        height="140"
+        rx="4"
+        stroke="#6366F1"
+        strokeWidth="2"
+        strokeDasharray="4 4"
+        fill="none"
+      />
+
+      {/* Scan Button */}
+      <circle cx="600" cy="540" r="24" fill="#6366F1" />
+      <circle cx="600" cy="540" r="18" fill="#FFFFFF" />
+      <circle cx="600" cy="540" r="12" fill="#6366F1" />
+
+      {/* Scan Status Text */}
+      <rect x="550" y="580" width="100" height="16" rx="2" fill="#6366F1" />
+
+      {/* Connection Lines between QR and Phone */}
+      <path d="M420 380 C460 380, 480 380, 530 420" stroke="#6366F1" strokeWidth="2" strokeDasharray="4 4" />
+      <circle cx="420" cy="380" r="4" fill="#6366F1" />
+      <circle cx="530" cy="420" r="4" fill="#6366F1" />
+
+      {/* Success Checkmark */}
+      <circle cx="460" cy="400" r="12" fill="#6366F1" opacity="0.2" />
+      <path
+        d="M454 400 L458 404 L466 396"
+        stroke="#6366F1"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   )
 }
