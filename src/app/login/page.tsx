@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { QrCode, Eye, EyeOff, Clock, BarChart3 } from "lucide-react"
 
@@ -11,38 +12,43 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
+import { signInUser } from "@/lib/auth"
+import { useToast } from "@/components/ui/use-toast"
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
+  const { toast } = useToast()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      await signInUser(email, password)
+      toast({
+        title: "Login successful",
+        description: "You have been logged in successfully.",
+        variant: "default",
+      })
+      router.push("/dashboard")
+    } catch (error: any) {
+      console.error("Login error:", error)
+      toast({
+        title: "Login failed",
+        description: error.message || "Please check your credentials and try again.",
+        variant: "destructive",
+      })
+    } finally {
       setIsLoading(false)
-      // Handle login logic here
-    }, 1500)
+    }
   }
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <header className="flex h-16 items-center border-b bg-background px-4 md:px-6">
-        <Link href="/" className="flex items-center gap-2">
-          <QrCode className="h-6 w-6 text-primary" />
-          <span className="text-xl font-bold">I&apos;m Here</span>
-        </Link>
-        <div className="ml-auto flex items-center gap-4">
-          <span className="text-sm text-muted-foreground">New to I&apos;m Here?</span>
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/signup">Sign up</Link>
-          </Button>
-        </div>
-      </header>
       <main className="flex flex-1 items-center justify-center p-4 md:p-8">
         <div className="grid w-full gap-6 sm:grid-cols-1 md:grid-cols-2 lg:max-w-5xl">
           <motion.div
@@ -171,7 +177,6 @@ export default function LoginPage() {
                 </p>
               </motion.div>
 
-
               <div className="grid grid-cols-3 gap-4 w-full max-w-md">
                 {stats.map((stat, index) => (
                   <motion.div
@@ -240,3 +245,4 @@ const stats = [
     icon: <BarChart3 className="h-4 w-4 text-primary" />,
   },
 ]
+

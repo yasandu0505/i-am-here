@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { QrCode, ArrowRight, Eye, EyeOff, BarChart3, Shield, Users, GraduationCap, Building } from "lucide-react"
 
@@ -13,6 +14,8 @@ import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { createUser, type UserRole } from "@/lib/auth"
+import { useToast } from "@/components/ui/use-toast"
 
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false)
@@ -33,6 +36,8 @@ export default function SignupPage() {
   const [step, setStep] = useState(1)
   const [passwordStrength, setPasswordStrength] = useState(0)
   const [accountType, setAccountType] = useState("student")
+  const router = useRouter()
+  const { toast } = useToast()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -57,11 +62,49 @@ export default function SignupPage() {
     e.preventDefault()
     setIsLoading(true)
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      // Prepare user data based on account type
+      const userData = {
+        email: formData.email,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        role: (formData.role as UserRole) || "student",
+      }
+
+      // Add account type specific fields
+      if (accountType === "student") {
+        Object.assign(userData, {
+          studentId: formData.studentId,
+          institution: formData.institution,
+        })
+      } else {
+        Object.assign(userData, {
+          organizationName: formData.organizationName,
+          organizationType: formData.organizationType,
+        })
+      }
+
+      // Create the user in Firebase
+      await createUser(formData.email, formData.password, userData)
+
+      toast({
+        title: "Account created successfully",
+        description: "You have been signed up and logged in.",
+        variant: "default",
+      })
+
+      // Redirect to dashboard
+      router.push("/dashboard")
+    } catch (error: any) {
+      console.error("Signup error:", error)
+      toast({
+        title: "Signup failed",
+        description: error.message || "There was an error creating your account.",
+        variant: "destructive",
+      })
+    } finally {
       setIsLoading(false)
-      // Handle signup logic here
-    }, 1500)
+    }
   }
 
   const nextStep = () => {
@@ -138,18 +181,6 @@ export default function SignupPage() {
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <header className="flex h-16 items-center border-b bg-background px-4 md:px-6">
-        <Link href="/" className="flex items-center gap-2">
-          <QrCode className="h-6 w-6 text-primary" />
-          <span className="text-xl font-bold">I&apos;m Here</span>
-        </Link>
-        <div className="ml-auto flex items-center gap-4">
-          <span className="text-sm text-muted-foreground">Already have an account?</span>
-          <Button variant="outline" size="sm" asChild>
-            <Link href="/login">Log in</Link>
-          </Button>
-        </div>
-      </header>
       <main className="flex flex-1 items-center justify-center p-4 md:p-8">
         <div className="grid w-full gap-6 sm:grid-cols-1 md:grid-cols-2 lg:max-w-5xl">
           <motion.div
@@ -630,59 +661,7 @@ export default function SignupPage() {
                   </AnimatePresence>
                 </div>
               </div>
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1, duration: 0.5 }}
-                className="mt-auto pt-6 flex justify-between items-center text-sm text-muted-foreground"
-              >
-                <div>
-                  {accountType === "student" ? "Used by 100,000+ students" : "Trusted by 500+ schools worldwide"}
-                </div>
-                <div className="flex items-center gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ scale: 0.5, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      transition={{ delay: 1.2 + i * 0.1, duration: 0.3 }}
-                      className="text-primary"
-                    >
-                      ★
-                    </motion.div>
-                  ))}
-                  <span className="ml-1">4.9/5</span>
-                </div>
-              </motion.div>
             </div>
-
-            {/* Animated background elements */}
-            <motion.div
-              animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.5, 0.8, 0.5],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Number.POSITIVE_INFINITY,
-                repeatType: "reverse",
-              }}
-              className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-primary/20 blur-2xl"
-            />
-            <motion.div
-              animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.5, 0.8, 0.5],
-              }}
-              transition={{
-                duration: 4,
-                delay: 2,
-                repeat: Number.POSITIVE_INFINITY,
-                repeatType: "reverse",
-              }}
-              className="absolute -bottom-6 -left-6 h-24 w-24 rounded-full bg-primary/20 blur-2xl"
-            />
           </motion.div>
         </div>
       </main>
