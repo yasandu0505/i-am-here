@@ -34,10 +34,10 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md shadow-sm">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
-        <div className="flex items-center gap-2">
-          <QrCode className="h-6 w-6 text-primary" />
-          <span className="text-xl font-bold">I&apos;m Here</span>
-        </div>
+      <Link href="/" className="flex items-center gap-2 cursor-pointer">
+      <QrCode className="h-6 w-6 text-primary" />
+      <span className="text-xl font-bold">I&apos;m Here</span>
+    </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
