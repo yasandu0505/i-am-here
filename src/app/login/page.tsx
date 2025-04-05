@@ -49,7 +49,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex h-screen w-full items-center justify-center overflow-hidden bg-muted/40">
+    <div className="flex w-full max-h-screen items-center justify-center overflow-hidden bg-muted/40 py-25">
       <div className="grid w-full max-w-5xl gap-6 px-4 sm:grid-cols-1 md:grid-cols-2">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
