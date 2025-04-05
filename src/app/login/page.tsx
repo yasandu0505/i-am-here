@@ -37,10 +37,14 @@ export default function LoginPage() {
       router.push("/dashboard")
     } catch (error: unknown) {
       console.error("Login error:", error)
-      const errorMessage = error instanceof Error ? error.message : "Please check your credentials and try again."
+
+      // Clear password field on error
+      setPassword("")
+
+      // Show user-friendly error message
       toast({
         title: "Login failed",
-        description: errorMessage,
+        description: "Incorrect email or password. Please try again.",
         variant: "destructive",
       })
     } finally {
@@ -49,7 +53,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex w-full max-h-screen items-center justify-center overflow-hidden bg-muted/40 py-25">
+    <div className="flex max-h-screen w-full items-center justify-center overflow-hidden bg-muted/40 py-25">
       <div className="grid w-full max-w-5xl gap-6 px-4 sm:grid-cols-1 md:grid-cols-2">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
