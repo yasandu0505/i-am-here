@@ -82,7 +82,7 @@ export default function NotFoundPage() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="mt-3 text-sm text-muted-foreground sm:text-base"
         >
-          The page you're looking for doesn't exist or has been moved.
+          The page you&apos;re looking for doesn&apos;t exist or has been moved.
         </motion.p>
 
         <motion.div
