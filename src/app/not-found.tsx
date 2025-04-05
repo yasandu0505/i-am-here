@@ -72,7 +72,7 @@ export default function NotFoundPage() {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="mt-4 text-muted-foreground"
           >
-            Oops! We couldn't find the page you're looking for.
+            Oops! We couldn&apos;t find the page you&apos;re looking for.
           </motion.p>
         </div>
 

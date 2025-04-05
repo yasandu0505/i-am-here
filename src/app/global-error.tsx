@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { ArrowLeft, AlertTriangle } from "lucide-react"
+import { AlertTriangle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export default function GlobalError({
@@ -12,6 +12,9 @@ export default function GlobalError({
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  // Using error in a console log to avoid the unused variable error
+  console.error("Application error:", error)
+
   return (
     <html>
       <body>
@@ -87,10 +90,7 @@ export default function GlobalError({
                 Try Again
               </Button>
               <Button asChild size="lg" variant="outline" className="gap-2">
-                <Link href="/">
-                  <ArrowLeft className="h-4 w-4" />
-                  Back to Home
-                </Link>
+                <Link href="/">Back to Home</Link>
               </Button>
             </motion.div>
           </div>
