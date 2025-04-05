@@ -2,15 +2,15 @@
 
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { QrCode, ArrowLeft, Search, MapPin } from "lucide-react"
+import { QrCode, ArrowLeft, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export default function NotFoundPage() {
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center bg-muted/10 px-4">
       <div className="relative mx-auto flex w-full max-w-3xl flex-col items-center justify-center rounded-lg border bg-background p-8 shadow-lg">
-        {/* Decorative elements */}
-        <div className="absolute -top-16 left-1/2 -translate-x-1/2">
+        {/* Decorative elements - QR code with reduced size */}
+        <div className="absolute -top-12 left-1/2 -translate-x-1/2">
           <motion.div
             initial={{ y: 0 }}
             animate={{ y: [0, -10, 0] }}
@@ -30,9 +30,9 @@ export default function NotFoundPage() {
                 repeat: Number.POSITIVE_INFINITY,
                 repeatType: "reverse",
               }}
-              className="absolute -inset-4 rounded-full bg-primary/20 blur-xl"
+              className="absolute -inset-3 rounded-full bg-primary/20 blur-xl"
             />
-            <div className="relative flex h-32 w-32 items-center justify-center rounded-full bg-background shadow-lg">
+            <div className="relative flex h-24 w-24 items-center justify-center rounded-full bg-background shadow-lg">
               <motion.div
                 initial={{ rotate: 0 }}
                 animate={{ rotate: 360 }}
@@ -42,14 +42,14 @@ export default function NotFoundPage() {
                   ease: "linear",
                 }}
               >
-                <QrCode className="h-16 w-16 text-primary" />
+                <QrCode className="h-12 w-12 text-primary" />
               </motion.div>
             </div>
           </motion.div>
         </div>
 
         {/* Main content */}
-        <div className="mt-20 text-center">
+        <div className="mt-16 text-center">
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -76,7 +76,7 @@ export default function NotFoundPage() {
           </motion.p>
         </div>
 
-        {/* Animated illustration */}
+        {/* Animated illustration - Only search icon */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -111,20 +111,6 @@ export default function NotFoundPage() {
               className="absolute -inset-4 z-0 rounded-full bg-primary/10 blur-lg"
             />
           </div>
-          <motion.div
-            animate={{
-              y: [0, 5, 0],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Number.POSITIVE_INFINITY,
-              repeatType: "reverse",
-              delay: 1,
-            }}
-            className="ml-8"
-          >
-            <MapPin className="h-12 w-12 text-primary/60" />
-          </motion.div>
         </motion.div>
 
         {/* Action buttons */}
