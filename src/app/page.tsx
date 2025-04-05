@@ -4,11 +4,13 @@ import { useEffect } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { CheckCircle, Clock, BarChart3, QrCode, Shield, Users } from "lucide-react"
-
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import DashboardPreview from "../../public/dashboard-preview"
 
 export default function HomePage() {
+
+  const router = useRouter()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,6 +18,11 @@ export default function HomePage() {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  const handleGetStart = () => {
+    router.push("/dashboard")
+
+  }
 
   return (
     <div className="flex min-h-screen flex-col overflow-x-hidden">
@@ -37,7 +44,7 @@ export default function HomePage() {
                   Streamline your attendance process with QR code check-ins and real-time analytics.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                  <Button size="lg" className="font-medium w-full sm:w-auto">
+                  <Button size="lg" className="font-medium w-full sm:w-auto" onClick={handleGetStart}>
                     Get Started
                   </Button>
                   <Button size="lg" variant="outline" className="font-medium w-full sm:w-auto">
