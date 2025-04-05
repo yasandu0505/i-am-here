@@ -6,7 +6,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { QrCode, Eye, EyeOff, Clock, BarChart3 } from "lucide-react"
+import { QrCode, Eye, EyeOff, Clock, BarChart3, AlertCircle } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -41,11 +41,16 @@ export default function LoginPage() {
       // Clear password field on error
       setPassword("")
 
-      // Show user-friendly error message
+      // Show user-friendly error message with custom styling
       toast({
         title: "Login failed",
-        description: "Incorrect email or password. Please try again.",
-        variant: "destructive",
+        description: (
+          <div className="flex items-center gap-2">
+            <AlertCircle className="h-4 w-4 text-primary" />
+            <span>Incorrect email or password. Please try again.</span>
+          </div>
+        ),
+        variant: "default",
       })
     } finally {
       setIsLoading(false)
