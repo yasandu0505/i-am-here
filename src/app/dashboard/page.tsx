@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { QrCode, Users, Clock, BarChart3, Calendar, Settings, Bell, Search } from "lucide-react"
+import { QrCode, Users, Clock, BarChart3, Calendar, Settings, Bell, Search, Menu } from "lucide-react"
 import { useAuth } from "@/context/auth-context"
 import ProtectedRoute from "@/components/protected-route"
 import { Button } from "@/components/ui/button"
@@ -17,6 +17,8 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  SidebarTrigger,
+  SidebarRail,
 } from "@/components/ui/sidebar"
 import { SidebarProvider } from "@/components/ui/sidebar"
 
@@ -35,7 +37,7 @@ export default function DashboardPage() {
     <ProtectedRoute>
       <SidebarProvider>
         <div className="flex min-h-screen">
-          <Sidebar>
+          <Sidebar collapsible="offcanvas">
             <SidebarHeader className="flex items-center justify-between p-4">
               <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                 <QrCode className="h-6 w-6 text-primary" />
@@ -99,28 +101,48 @@ export default function DashboardPage() {
                 </div>
               </div>
             </SidebarFooter>
+            <SidebarRail />
           </Sidebar>
 
           <div className="flex-1 p-4 md:p-6 overflow-auto">
             <div className="flex flex-col gap-6 max-w-7xl mx-auto">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                  <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
-                    {greeting}, {userData?.firstName || "User"}
-                  </h1>
-                  <p className="text-muted-foreground mt-1">
-                    Here&apos;s what&apos;s happening with your attendance today.
-                  </p>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-3">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="md:hidden h-10 w-10 rounded-full bg-primary/5 hover:bg-primary/10 text-primary"
+                    asChild
+                  >
+                    <SidebarTrigger>
+                      <Menu className="h-5 w-5" />
+                    </SidebarTrigger>
+                  </Button>
+                  <div>
+                    <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
+                      {greeting}, {userData?.firstName || "User"}
+                    </h1>
+                    <p className="text-muted-foreground mt-1">
+                      Here&apos;s what&apos;s happening with your attendance today.
+                    </p>
+                  </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="relative flex-1 sm:flex-none">
+                  <div className="relative hidden sm:block">
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input type="search" placeholder="Search..." className="w-full sm:w-[240px] pl-8" />
+                    <Input type="search" placeholder="Search..." className="w-[240px] pl-8" />
                   </div>
-                  <Button size="icon" variant="outline" className="shrink-0">
+                  <Button size="icon" variant="outline" className="shrink-0 rounded-full h-10 w-10">
                     <Bell className="h-4 w-4" />
                     <span className="sr-only">Notifications</span>
                   </Button>
+                </div>
+              </div>
+
+              <div className="sm:hidden mb-4">
+                <div className="relative">
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Input type="search" placeholder="Search..." className="w-full pl-8" />
                 </div>
               </div>
 
