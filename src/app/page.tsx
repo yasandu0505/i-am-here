@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { CheckCircle, Clock, BarChart3, QrCode, Shield, Users } from "lucide-react"
@@ -9,24 +9,34 @@ import { Button } from "@/components/ui/button"
 import DashboardPreview from "../../public/dashboard-preview"
 
 export default function HomePage() {
-
   const router = useRouter()
+  const [text, setText] = useState("")
+  const [isTypingComplete, setIsTypingComplete] = useState(false)
+  const fullText = "Smart Attendance Tracking"
 
   useEffect(() => {
-    const handleScroll = () => {
+    if (text.length < fullText.length) {
+      const timeout = setTimeout(() => {
+        setText(fullText.slice(0, text.length + 1))
+      }, 100)
+      return () => clearTimeout(timeout)
+    } else {
+      setIsTypingComplete(true)
     }
+  }, [text])
+
+  useEffect(() => {
+    const handleScroll = () => {}
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   const handleGetStart = () => {
     router.push("/dashboard")
-
   }
 
   return (
     <div className="flex min-h-screen flex-col overflow-x-hidden">
-      
       <main className="flex-1">
         <section className="relative overflow-hidden bg-gradient-to-b from-primary/10 to-background py-12 sm:py-16 md:py-20 lg:py-32">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -38,7 +48,18 @@ export default function HomePage() {
                 className="flex flex-col gap-6 text-center md:text-left"
               >
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-                  Smart Attendance Tracking <span className="text-primary block md:inline">Made Simple</span>
+                  <span className="inline-block">{text}</span>
+                  <span
+                    className={`inline-block w-1 h-8 md:h-10 lg:h-12 bg-primary ml-1 ${isTypingComplete ? "animate-pulse" : "animate-blink"}`}
+                  ></span>
+                  <motion.span
+                    className="text-primary block md:inline"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: isTypingComplete ? 1 : 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {" Made Simple"}
+                  </motion.span>
                 </h1>
                 <p className="text-lg sm:text-xl text-muted-foreground">
                   Streamline your attendance process with QR code check-ins and real-time analytics.
@@ -362,4 +383,3 @@ const testimonials = [
       "We use I'm Here for all our campus events now. It's so much easier than manual check-ins and gives us accurate attendance data.",
   },
 ]
-
