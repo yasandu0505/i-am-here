@@ -11,9 +11,13 @@ import DashboardPreview from "../../public/dashboard-preview"
 export default function HomePage() {
   const router = useRouter()
   const [text, setText] = useState("")
-  const [isTypingComplete, setIsTypingComplete] = useState(false)
+  const [secondText, setSecondText] = useState("")
+  const [isFirstTypingComplete, setIsFirstTypingComplete] = useState(false)
+  const [isSecondTypingComplete, setIsSecondTypingComplete] = useState(false)
   const fullText = "Smart Attendance Tracking"
+  const secondFullText = " Made Simple"
 
+  // First text typing animation
   useEffect(() => {
     if (text.length < fullText.length) {
       const timeout = setTimeout(() => {
@@ -21,9 +25,21 @@ export default function HomePage() {
       }, 100)
       return () => clearTimeout(timeout)
     } else {
-      setIsTypingComplete(true)
+      setIsFirstTypingComplete(true)
     }
   }, [text])
+
+  // Second text typing animation (starts after first is complete)
+  useEffect(() => {
+    if (isFirstTypingComplete && secondText.length < secondFullText.length) {
+      const timeout = setTimeout(() => {
+        setSecondText(secondFullText.slice(0, secondText.length + 1))
+      }, 100)
+      return () => clearTimeout(timeout)
+    } else if (secondText.length === secondFullText.length) {
+      setIsSecondTypingComplete(true)
+    }
+  }, [isFirstTypingComplete, secondText])
 
   useEffect(() => {
     const handleScroll = () => {}
@@ -49,17 +65,11 @@ export default function HomePage() {
               >
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
                   <span className="inline-block">{text}</span>
-                  <span
-                    className={`inline-block w-1 h-8 md:h-10 lg:h-12 bg-primary ml-1 ${isTypingComplete ? "animate-pulse" : "animate-blink"}`}
-                  ></span>
-                  <motion.span
-                    className="text-primary block md:inline"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: isTypingComplete ? 1 : 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {" Made Simple"}
-                  </motion.span>
+                  {isFirstTypingComplete && <span className="text-primary inline-block">{secondText}</span>}
+                  {/* Only show cursor if typing is not complete */}
+                  {!isSecondTypingComplete && (
+                    <span className="inline-block w-1 h-8 md:h-10 lg:h-12 bg-primary animate-blink"></span>
+                  )}
                 </h1>
                 <p className="text-lg sm:text-xl text-muted-foreground">
                   Streamline your attendance process with QR code check-ins and real-time analytics.
